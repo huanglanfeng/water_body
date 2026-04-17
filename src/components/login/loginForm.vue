@@ -191,9 +191,9 @@ const captcha = async () => {
 
 //图片验证码
 const getBaseUrl = () => import.meta.env.VITE_BASE_URL || '/api';
-const codeUrl = ref(getBaseUrl() + '/getVerificationCodePhoto');
+const codeUrl = ref(getBaseUrl() + '/Account/getVerificationCodePhoto');
 const refreshCode = () => {
-  codeUrl.value = getBaseUrl() + '/getVerificationCodePhoto?' + new Date().getTime();
+  codeUrl.value = getBaseUrl() + '/Account/getVerificationCodePhoto?' + new Date().getTime();
 };
 
 //注册

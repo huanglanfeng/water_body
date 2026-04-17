@@ -1,7 +1,7 @@
 import requests from "@/utils/request";
 
 export const loginPost = (data: any) => {
-  return requests.post("/login", data);
+  return requests.post("/Account/login", data);
 };
 
 export const loginPosts = (data: any) => {
@@ -9,7 +9,7 @@ export const loginPosts = (data: any) => {
 };
 
 export const registerPost = (data: any) => {
-  return requests.post("/register", data);
+  return requests.post("/Account/register", data);
 };
 
 export const userFind = (params: any) => {
@@ -21,5 +21,5 @@ export const userCaptcha = (data: any) => {
 };
 
 export const userInfo = (data: any) => {
-  return requests.get("/getVerificationCodePhoto", { responseType: 'blob' });
+  return requests.get("/Account/getVerificationCodePhoto", { responseType: 'blob' });
 };
