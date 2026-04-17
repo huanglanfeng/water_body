@@ -1,0 +1,18 @@
+.el-table th,
+.el-table tr,
+.el-table td {
+  background-color: transparent !important;
+  color: #fff;
+}
+.el-table th:hover,
+.el-table tr:hover,
+.el-table td:hover {
+  background-color: #1e113a !important;
+}
+.el-table,
+.el-table__expanded-cell {
+  background-color: transparent !important;
+}
+.el-select {
+  background-color: transparent;
+}
