@@ -5,7 +5,7 @@ export const userAdmin = (params: any) => {
 };
 
 export const addUser = (data: any) => {
-  return requests.post("/Account/register", data);
+  return requests.post("/register", data);
 };
 
 /**

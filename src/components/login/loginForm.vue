@@ -190,9 +190,10 @@ const captcha = async () => {
 };
 
 //图片验证码
-const codeUrl = ref('/api/Account/getVerificationCodePhoto');
+const getBaseUrl = () => import.meta.env.VITE_BASE_URL || '/api';
+const codeUrl = ref(getBaseUrl() + '/getVerificationCodePhoto');
 const refreshCode = () => {
-  codeUrl.value = '/api/Account/getVerificationCodePhoto?' + new Date().getTime();
+  codeUrl.value = getBaseUrl() + '/getVerificationCodePhoto?' + new Date().getTime();
 };
 
 //注册

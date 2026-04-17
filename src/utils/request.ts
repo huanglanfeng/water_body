@@ -2,8 +2,7 @@ import axios from "axios";
 import { GET_TOKEN } from "@/utils/cookie";
 
 const requests = axios.create({
-  baseURL: "/api",
-  //    baseURL: import.meta.env.VITE_BASE_URL,
+  baseURL: import.meta.env.VITE_BASE_URL || "/api",
   timeout: 50000,
 });
 requests.defaults.withCredentials = true; //默认携带cookie
