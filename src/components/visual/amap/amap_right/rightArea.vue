@@ -50,7 +50,7 @@ onMounted(async () => {
 
 <template>
   <div class="WornData">
-    <dv-scroll-board :config="config" style="width: 1000px; height: 300px;"/>
+    <dv-scroll-board :config="config" style="width: 100%; height: 100%;"/>
   </div>
 </template>
 
@@ -64,8 +64,12 @@ const config=reactive({
   data:  [] as form[],
   // ['行10列1', '<span style="color:#e7bcf3;">行10列2</span>', '行10列3','<span style="color:#37a2da;">行1列1</span>', '行1列2', '行1列3']
   index: false,
-  columnWidth: [110,150,150,150,150],
-  align: ['center']
+  columnWidth: [12, 18, 25, 20, 25],
+  align: ['center'],
+  headerHeight: 35,
+  rowHeight: 30,
+  oddRowBgc: 'rgba(0,0,0,0.1)',
+  evenRowBgc: 'rgba(0,50,100,0.2)'
 })
 
 const tableData = ref<Array<form>>([]);

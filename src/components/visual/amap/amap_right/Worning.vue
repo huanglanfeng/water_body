@@ -9,7 +9,7 @@ import { onMounted } from "vue";
 const init = () => {
   let chartDom = document.getElementById("Worning_data")!;
   let myChart = echarts.init(chartDom);
-    let dataX= ['3月1日', '3月1日', '3月1日', '3月1日', '3月1日', '3月1日', '3月1日', '3月1日']
+    let dataX= ['3月1日', '3月4日', '3月7日', '3月10日', '3月13日', '3月16日', '3月19日', '3月22日']
 let dataY =[98, 38, 48, 35, 92, 28, 93, 85]
 let dataY1 =[400, 500, 300, 300, 300, 400, 400, 400, 300]
 var option = {
@@ -21,7 +21,7 @@ var option = {
         formatter: function (params) {
             return (
                 dataX[params[0].dataIndex] +
-                '<br/>满意度：' +
+                '<br/>解决率：' +
                 dataY[params[0].dataIndex] +
                 '%' +
                 '<br> 处理量：' +
@@ -167,7 +167,7 @@ onMounted(async() => {
 
 <style lang="less" scoped>
 #Worning_data{
-  width: 25vw;
-  height: 30vh;
+  width: 100%;
+  height: calc(100% - 32px);
 }
 </style>

@@ -173,7 +173,7 @@ onMounted(async () => {
 
 <style lang="less" scoped>
 #WornType {
-    width: 25vw;
-    height: 29vh;
+    width: 100%;
+    height: 100%;
 }
 </style>

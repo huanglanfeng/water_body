@@ -11,7 +11,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 38px;
+  font-size: 26px;
   font-weight: 600;
   color: #fff;
 }

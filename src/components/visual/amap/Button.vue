@@ -1,18 +1,23 @@
 <template>
   <div class="button">
     <div class="left">
-      <span @click="water_detection">水质检测</span>
-      <span @click="video">视频监控</span>
+      <span :class="{ active: currentPath === '/index/water_detection' }" @click="water_detection">水质检测</span>
+      <span :class="{ active: currentPath === '/index/video' }" @click="video">视频监控</span>
     </div>
     <div class="right">
-      <span @click="worning_detection">预警详情</span>
-      <span @click="water_identify">水质识别</span>
+      <span :class="{ active: currentPath === '/index/worning_detection' }" @click="worning_detection">预警详情</span>
+      <span :class="{ active: currentPath === '/index/water_detection' }" @click="water_identify">水质识别</span>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import router from "@/router"
+import { useRoute } from "vue-router"
+import { computed } from "vue"
+
+const route = useRoute()
+const currentPath = computed(() => route.path)
 
 const video=()=>{
     router.push('/index/video')
@@ -53,6 +58,12 @@ const water_identify=()=>{
       color: rgb(225, 224, 199);
       background: url('@/assets/image/imgbg.png');
       background-size: 100% 100%;
+      cursor: pointer;
+      &.active{
+        color: #00ffff;
+        text-shadow: 0 0 10px rgba(0,255,255,0.8);
+        border-bottom: 2px solid #00ffff;
+      }
     }
 }
 </style>

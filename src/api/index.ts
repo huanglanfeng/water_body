@@ -1,4 +1,4 @@
-export * from "./chartData";
+// export * from "./chartData";
 
 /**
  * 后台管理系统
@@ -25,7 +25,7 @@ export * from "./backstage/EarlyWarning";
 export * from "./backstage/UserSystem";
 
 //test
-export * from "./test/amapUI";
+// export * from "./test/amapUI";
 
 //登录注册
 export * from "./login/index";

@@ -17,14 +17,7 @@
   position: absolute;
   top: -10vh;
   z-index: -1;
-  background: linear-gradient(135deg, #0c1445 0%, #1a237e 25%, #0d47a1 50%, #01579b 75%, #0c1445 100%);
-  background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite;
-}
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  background: linear-gradient(180deg, #0a0e27 0%, #0d1b3e 30%, #0f2847 60%, #0a1628 100%);
 }
 .content {
   width: 100vw;

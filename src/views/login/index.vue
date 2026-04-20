@@ -16,11 +16,12 @@ import loginFormVue from "@/components/login/loginForm.vue";
   height: 100vh;
   background-image: url(@/assets/login/R-C.jpg);
    background-size: cover;
+   background-position: center;
    display: flex;
    justify-content: center;
+   align-items: center;
    .form{
-    position: absolute;
-    top: 20%;
+    /* 垂直水平居中，由父级 flex 控制 */
    }
 }
 </style>

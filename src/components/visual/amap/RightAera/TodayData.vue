@@ -72,7 +72,7 @@ const init = () => {
                 name: '最低下的圆片',
                 stack: 'a',
                 type: 'effectScatter',
-                symbolSize: [80, 40],
+                symbolSize: [50, 25],
                 symbolOffset: [0, 0],
                 z: 22,
                 data: [
@@ -112,42 +112,6 @@ const init = () => {
                             },
                         },
                     },
-                    {
-                        name: '',
-                        value: '0',
-                        itemStyle: {
-                            normal: {
-                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                                    {
-                                        offset: 0,
-                                        color: 'rgba(119, 191, 255, 1)',
-                                    },
-                                    {
-                                        offset: 1,
-                                        color: 'rgba(102, 155, 255, 1)',
-                                    },
-                                ]),
-                            },
-                        },
-                    },
-                    {
-                        name: '',
-                        value: '0',
-                        itemStyle: {
-                            normal: {
-                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                                    {
-                                        offset: 0,
-                                        color: 'rgba(14, 195, 255, 1)',
-                                    },
-                                    {
-                                        offset: 1,
-                                        color: 'rgba(0, 72, 203,  1)',
-                                    },
-                                ]),
-                            },
-                        },
-                    },
                 ],
             },
             //下半截柱状图
@@ -155,13 +119,13 @@ const init = () => {
                 name: '下半截柱状图',
                 stack: 'a',
                 type: 'bar',
-                barWidth: 80,
+                barWidth: 50,
                 z: 2,
                 barGap: '-100%',
                 data: [
                     {
                         name: '',
-                        value: '212',
+                        value: '21',
                         itemStyle: {
                             normal: {
                                 color: {
@@ -201,7 +165,6 @@ const init = () => {
                                     colorStops: [
                                         {
                                             //第二个柱状图下面
-
                                             offset: 0,
                                             color: 'rgba(8, 177, 255, 0.8)',
                                         },
@@ -214,73 +177,19 @@ const init = () => {
                             },
                         },
                     },
-                    {
-                        name: '',
-                        value: '260',
-                        itemStyle: {
-                            normal: {
-                                color: {
-                                    x: 0,
-                                    y: 0,
-                                    x2: 0,
-                                    y2: 1,
-                                    type: 'linear',
-                                    global: false,
-                                    colorStops: [
-                                        {
-                                            //第三个柱状图下半截
-                                            offset: 0,
-                                            color: 'rgba(119, 191, 255, 0.8)',
-                                        },
-                                        {
-                                            offset: 1,
-                                            color: 'rgba(102, 155, 255, 0.8)',
-                                        },
-                                    ],
-                                },
-                            },
-                        },
-                    },
-                    {
-                        name: '',
-                        value: '283',
-                        itemStyle: {
-                            normal: {
-                                color: {
-                                    x: 0,
-                                    y: 0,
-                                    x2: 0,
-                                    y2: 1,
-                                    type: 'linear',
-                                    global: false,
-                                    colorStops: [
-                                        {
-                                            //第三个柱状图下半截
-                                            offset: 0,
-                                            color: 'rgba(0, 72, 203,0.8)',
-                                        },
-                                        {
-                                            offset: 1,
-                                            color: 'rgba(14, 195, 255, 0.8)',
-                                        },
-                                    ],
-                                },
-                            },
-                        },
-                    },
                 ],
             },
             {
                 name: '头部1',
                 stack: 'a',
                 type: 'pictorialBar',
-                symbolSize: [80, 20],
+                symbolSize: [50, 12],
                 symbolOffset: [0, -10],
                 z: 22,
                 data: [
                     {
                         name: '',
-                        value: '212',
+                        value: '21',
                         symbolPosition: 'end',
                         label: {
                             formatter: '{c} 次',
@@ -288,7 +197,7 @@ const init = () => {
                             offset: [0, -5],
                             show: true,
                             position: 'top',
-                            fontSize: 18,
+                            fontSize: 14,
                             fontWeight: 400,
                             fontFamily: 'zcool-gdh',
                         },
@@ -324,7 +233,7 @@ const init = () => {
                             offset: [0, -5],
                             show: true,
                             position: 'top',
-                            fontSize: 18,
+                            fontSize: 14,
                             fontWeight: 400,
                             fontFamily: 'zcool-gdh',
                         },
@@ -350,78 +259,6 @@ const init = () => {
                             },
                         },
                     },
-                    {
-                        name: '',
-                        value: '260',
-                        symbolPosition: 'end',
-                        label: {
-                            formatter: '{c} 次',
-                            color: '#fff',
-                            offset: [0, -5],
-                            show: true,
-                            position: 'top',
-                            fontSize: 18,
-                            fontWeight: 400,
-                            fontFamily: 'zcool-gdh',
-                        },
-                        itemStyle: {
-                            normal: {
-                                color: new echarts.graphic.LinearGradient(
-                                    0,
-                                    0,
-                                    0,
-                                    1,
-                                    [
-                                        {
-                                            offset: 0,
-                                            color: 'rgba(119, 191, 255,  1)',
-                                        },
-                                        {
-                                            offset: 1,
-                                            color: 'rgba(102, 155, 255,    1)',
-                                        },
-                                    ],
-                                    false
-                                ),
-                            },
-                        },
-                    },
-                    {
-                        name: '',
-                        value: '283',
-                        symbolPosition: 'end',
-                        label: {
-                            formatter: '{c} 次',
-                            color: '#fff',
-                            offset: [0, -5],
-                            show: true,
-                            position: 'top',
-                            fontSize: 18,
-                            fontWeight: 400,
-                            fontFamily: 'zcool-gdh',
-                        },
-                        itemStyle: {
-                            normal: {
-                                color: new echarts.graphic.LinearGradient(
-                                    0,
-                                    0,
-                                    0,
-                                    1,
-                                    [
-                                        {
-                                            offset: 0,
-                                            color: 'rgba(0, 72, 203,  1)',
-                                        },
-                                        {
-                                            offset: 1,
-                                            color: 'rgba(14, 195, 255,  1)',
-                                        },
-                                    ],
-                                    false
-                                ),
-                            },
-                        },
-                    },
                 ],
             },
         ],
@@ -437,7 +274,7 @@ onMounted(async () => {
 
 <style lang="less" scoped>
 #TodayData1 {
-    width: 25vw;
-    height: 25vh;
+    width: 100%;
+    height: calc(100% - 32px);
 }
 </style>

@@ -12,19 +12,15 @@
             </template>
           </el-dropdown>
           </span>
-          <span class="datas">{{ selectedData?.address }}</span>
+          <span class="datas">{{ selectedData?.address ?? '--' }}</span>
         </div>
         <div class="data">
           <span>污染指数</span>
-          <span class="datas">{{ selectedData?.pollutionIndex }}</span>
-        </div>
-        <div class="data">
-            <span>预警等级</span>
-            <span class="datas">{{ selectedData?.alertLevel }}</span>
+          <span class="datas">{{ selectedData?.pollutionIndex ?? '--' }}<span class="unit"> mg/L</span></span>
         </div>
         <div class="data">
             <span>预警次数</span>
-            <span class="datas">{{ selectedData?.alertNumber }}</span>
+            <span class="datas">{{ selectedData?.alertNumber ?? '--' }}<span class="unit"> 次</span></span>
         </div>
     </div>
 </template>
@@ -66,29 +62,35 @@ onMounted(async () => {
 
 <style lang="less" scoped>
 .leftArea {
-  width: 47vw;
-  height: 15vh;
-  display: flex;
-  flex-direction:row;
-  justify-content: space-around;
-  .data{
-    width: 11vw;
-    height: 12vh;
-    margin: 1vh 0.5vw 1vh 0.5vw;
-    background-image: url('@/assets/image/select.png');
-    background-size: 100% 100%;
-    span{
-      color: #f9ffdf;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 20px;
-      padding-top: 20px;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 0;
+  .data {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    border: 1px solid rgba(0, 180, 255, 0.15);
+    border-radius: 2px;
+    background: rgba(0, 30, 60, 0.5);
+    span {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 12px;
     }
-    .datas{
-      color: rgb(243, 248, 95);
-      font: italic bold 24px/30px arial, sans-serif;
-      padding-top: 8px;
+    .datas {
+      color: #00e5ff;
+      font-size: 18px;
+      font-weight: 700;
+      margin-top: 4px;
+      .unit {
+        font-size: 12px;
+        font-weight: 400;
+        color: rgba(0, 229, 255, 0.5);
+      }
     }
   }
 }

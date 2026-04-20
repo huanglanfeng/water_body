@@ -1,6 +1,6 @@
 <template>
     <div class="WornData">
-        <dv-scroll-board :config="config" style="width: 24vw; height: 30vh;margin:0 10px 0 10px" />
+        <dv-scroll-board :config="config" style="width: 100%; height: calc(100% - 32px);margin:0 10px 0 10px" />
     </div>
 </template>
 
@@ -14,8 +14,12 @@ const config = reactive({
     data: [] as form[],
     // data: [tableData.value[0]?.id],
     index: false,
-    columnWidth: [110, 150, 150,150],
-    align: ['center']
+    columnWidth: [15, 20, 35, 30],
+    align: ['center'],
+    headerHeight: 40,
+    rowHeight: 35,
+    oddRowBgc: 'rgba(0,0,0,0.1)',
+    evenRowBgc: 'rgba(0,50,100,0.2)'
 })
 
 const getData = async () => {
