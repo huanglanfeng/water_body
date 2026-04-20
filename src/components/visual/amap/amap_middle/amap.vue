@@ -50,7 +50,7 @@ const initPathSimplifier = () => {
 
       var pathSimplifierIns = new PathSimplifier({
         zIndex: 100,
-        map: mapInstance.value,
+        map: mapInstance.value || null,
         getPath: function (pathData: any, pathIndex: any) {
           return pathData.path;
         },
