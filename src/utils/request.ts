@@ -5,13 +5,11 @@ const requests = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL || "/api",
   timeout: 50000,
 });
-requests.defaults.withCredentials = true; //默认携带cookie
 
 //请求拦截器：发请求之前，检测到请求
 requests.interceptors.request.use(
   (config) => {
     //config：配置对象，里面一个属性比较重要，headers请求头
-    config.withCredentials = true;
     config.headers.Authorization = GET_TOKEN();
     // console.log(config.headers, "header");
 
