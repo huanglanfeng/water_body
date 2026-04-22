@@ -12,7 +12,6 @@ app.use('/api', createProxyMiddleware({
   changeOrigin: true,
   pathRewrite: { '^/api': '' },
   onProxyReq: (proxyReq, req) => {
-    // 转发原始请求头
     if (req.headers.authorization) {
       proxyReq.setHeader('Authorization', req.headers.authorization);
     }
@@ -26,8 +25,11 @@ app.use('/api', createProxyMiddleware({
 // 静态文件服务（Vite构建产物）
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// SPA兜底：所有非API请求返回index.html
+// SPA兜底：所有非API请求返回index.html（禁用缓存，确保每次获取最新版本）
 app.get('*', (req, res) => {
+  res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
