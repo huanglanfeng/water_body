@@ -1,60 +1,52 @@
 const express = require('express');
 const path = require('path');
+const http = require('http');
+const https = require('https');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const BACKEND_URL = 'https://waterbodybackend-production.up.railway.app';
 
-// API代理：/api → 后端（使用Node原生fetch转发，直接透传）
-app.use('/api', async (req, res) => {
-  try {
-    const targetPath = req.originalUrl.replace(/^\/api/, '') || '/';
-    const targetUrl = BACKEND_URL + targetPath;
+// API代理：/api → 后端（使用http/https模块转发，更可靠）
+app.use('/api', (req, res) => {
+  const targetPath = req.originalUrl.replace(/^\/api/, '') || '/';
+  const targetUrl = new URL(targetPath, BACKEND_URL);
 
-    // 构建转发请求头（排除host和connection）
-    const headers = {};
-    for (const [key, value] of Object.entries(req.headers)) {
-      if (key !== 'host' && key !== 'connection') {
-        headers[key] = value;
-      }
-    }
+  // 构建转发请求头
+  const headers = { ...req.headers };
+  delete headers.host;
+  delete headers.connection;
 
-    // 读取原始请求体
-    const chunks = [];
-    for await (const chunk of req) {
-      chunks.push(chunk);
-    }
-    const body = chunks.length > 0 ? Buffer.concat(chunks) : undefined;
+  // 使用http/https模块转发，设置超时
+  const options = {
+    hostname: targetUrl.hostname,
+    port: 443,
+    path: targetUrl.pathname + targetUrl.search,
+    method: req.method,
+    headers,
+    timeout: 15000,
+  };
 
-    // 转发请求
-    const fetchOptions = {
-      method: req.method,
-      headers,
-    };
-    if (body && body.length > 0) {
-      fetchOptions.body = body;
-    }
+  const proxyReq = https.request(options, (proxyRes) => {
+    res.writeHead(proxyRes.statusCode, proxyRes.headers);
+    proxyRes.pipe(res);
+  });
 
-    const response = await fetch(targetUrl, fetchOptions);
-
-    // 返回响应
-    const responseBuffer = Buffer.from(await response.arrayBuffer());
-    res.status(response.status);
-    
-    // 复制响应头（排除transfer-encoding和connection）
-    response.headers.forEach((value, key) => {
-      if (!['transfer-encoding', 'connection'].includes(key)) {
-        res.set(key, value);
-      }
-    });
-    
-    res.send(responseBuffer);
-  } catch (err) {
+  proxyReq.on('error', (err) => {
     console.error('代理错误:', err.message);
     if (!res.headersSent) {
       res.status(500).json({ code: 50000, msg: '代理请求失败: ' + err.message, data: null });
     }
-  }
+  });
+
+  proxyReq.on('timeout', () => {
+    proxyReq.destroy();
+    if (!res.headersSent) {
+      res.status(504).json({ code: 50000, msg: '代理请求超时', data: null });
+    }
+  });
+
+  req.pipe(proxyReq);
 });
 
 // 静态文件服务（Vite构建产物）
