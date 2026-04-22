@@ -3,7 +3,7 @@ import { GET_TOKEN } from "@/utils/cookie";
 
 const requests = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL || "/api",
-  timeout: 50000,
+  timeout: 15000,
 });
 
 //请求拦截器：发请求之前，检测到请求

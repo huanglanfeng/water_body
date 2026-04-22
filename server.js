@@ -5,13 +5,13 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const BACKEND_URL = 'https://waterbodybackend-production.up.railway.app';
 
-// API代理：/api/* → 后端（使用Node原生fetch转发，不解析请求体，直接透传）
-app.all('/api/*', async (req, res) => {
+// API代理：/api → 后端（使用Node原生fetch转发，直接透传）
+app.use('/api', async (req, res) => {
   try {
-    const targetPath = req.originalUrl.replace(/^\/api/, '');
+    const targetPath = req.originalUrl.replace(/^\/api/, '') || '/';
     const targetUrl = BACKEND_URL + targetPath;
 
-    // 构建转发请求头（排除host）
+    // 构建转发请求头（排除host和connection）
     const headers = {};
     for (const [key, value] of Object.entries(req.headers)) {
       if (key !== 'host' && key !== 'connection') {
@@ -41,7 +41,7 @@ app.all('/api/*', async (req, res) => {
     const responseBuffer = Buffer.from(await response.arrayBuffer());
     res.status(response.status);
     
-    // 复制响应头
+    // 复制响应头（排除transfer-encoding和connection）
     response.headers.forEach((value, key) => {
       if (!['transfer-encoding', 'connection'].includes(key)) {
         res.set(key, value);

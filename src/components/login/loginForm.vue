@@ -57,7 +57,7 @@
               @keyup.enter="login"
             />
             <div class="captcha-img-wrap" @click="refreshCode" title="点击刷新验证码">
-              <img :src="codeUrl" alt="验证码" />
+              <img :src="codeUrl" alt="验证码" @error="handleCodeError" />
               <span class="captcha-tip">换一张</span>
             </div>
           </div>
@@ -397,74 +397,42 @@ const login = async () => {
   if (!validateLogin()) return;
   loginLoading.value = true;
   try {
-    const res = await loginPost(form.value);
-    var str_jsonData = JSON.stringify(res?.name)
-    localStorage.setItem('localData', str_jsonData);
+    const res = await loginPost({
+      login_account: form.value.login_account,
+      login_password: form.value.login_password,
+      login_code: form.value.login_code,
+    });
     if ((res as any).code == 30001) {
+      // 登录成功
       SET_MENU(JSON.stringify(res.data?.menu));
       SET_TOKEN(res.data?.token);
+      localStorage.setItem('localData', JSON.stringify(res?.name || ''));
+      ElMessage({ message: '登录成功，正在跳转...', type: 'success', duration: 1500 });
       try {
-        ElMessage({
-          message: "登录成功",
-          type: "success",
-        });
         let menu = GET_MENU();
         asyncMenu.value = menu;
         assRouter(menu);
       } catch (error) {
         console.log(error, "err");
       }
-      router.push("/index");
-      const loading = ElLoading.service({
-        lock: true,
-        text: 'Loading',
-        background: 'rgba(0, 0, 0, 0.7)',
-      })
       setTimeout(() => {
-        loading.close()
-        open()
-      }, 2000)
+        router.push("/index");
+      }, 500);
     } else {
-      ElMessage({
-        message: res?.msg || '登录失败',
-        type: "error",
-      });
+      ElMessage({ message: res?.msg || '登录失败', type: 'error' });
+      form.value.login_code = '';
       refreshCode();
     }
-  } catch (error) {
-    ElMessage({ message: '网络异常，请稍后重试', type: 'error' });
+  } catch (error: any) {
+    const msg = error?.response?.data?.msg || error?.message || '网络异常，请稍后重试';
+    ElMessage({ message: msg, type: 'error' });
+    form.value.login_code = '';
     refreshCode();
   } finally {
     loginLoading.value = false;
   }
 };
 
-const open = () => {
-  ElMessageBox.confirm(
-    '出现报警，是否前往处理',
-    '警告',
-    {
-      confirmButtonText: '处理',
-      cancelButtonText: '等待',
-      type: 'error',
-      icon: 'WarningFilled',
-      center: true,
-      customStyle: {
-        width: '300px',
-      },
-    }
-  )
-    .then(() => {
-      router.push('/EarlyWarning')
-    })
-    .catch(() => {
-      ElNotification({
-        title: '警告',
-        message: '预警信息请查看！！！',
-        type: 'warning',
-      })
-    })
-}
 
 // ========== 获取短信验证码 ==========
 const sendRegCode = async () => {
@@ -504,6 +472,13 @@ const getBaseUrl = () => import.meta.env.VITE_BASE_URL || '/api';
 const codeUrl = ref(getBaseUrl() + '/Account/getVerificationCodePhoto');
 const refreshCode = () => {
   codeUrl.value = getBaseUrl() + '/Account/getVerificationCodePhoto?' + new Date().getTime();
+};
+
+const handleCodeError = () => {
+  // 验证码加载失败时自动重试一次
+  setTimeout(() => {
+    refreshCode();
+  }, 1000);
 };
 
 // ========== 注册 ==========
