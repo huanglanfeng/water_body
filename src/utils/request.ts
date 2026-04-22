@@ -9,10 +9,11 @@ const requests = axios.create({
 //请求拦截器：发请求之前，检测到请求
 requests.interceptors.request.use(
   (config) => {
-    //config：配置对象，里面一个属性比较重要，headers请求头
-    config.headers.Authorization = GET_TOKEN();
-    // console.log(config.headers, "header");
-
+    // 只在有token时才设置Authorization头，避免未登录时触发不必要的CORS预检
+    const token = GET_TOKEN();
+    if (token) {
+      config.headers.Authorization = token;
+    }
     return config;
   },
   (error) => {
