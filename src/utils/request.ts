@@ -2,7 +2,7 @@ import axios from "axios";
 import { GET_TOKEN } from "@/utils/cookie";
 
 const requests = axios.create({
-  baseURL: import.meta.env.VITE_BASE_URL || "/api",
+  baseURL: "/api",
   timeout: 15000,
 });
 

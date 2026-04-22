@@ -468,10 +468,9 @@ const sendRetrieveCode = async () => {
 };
 
 // ========== 图片验证码 ==========
-const getBaseUrl = () => import.meta.env.VITE_BASE_URL || '/api';
-const codeUrl = ref(getBaseUrl() + '/Account/getVerificationCodePhoto');
+const codeUrl = ref('/api/Account/getVerificationCodePhoto');
 const refreshCode = () => {
-  codeUrl.value = getBaseUrl() + '/Account/getVerificationCodePhoto?' + new Date().getTime();
+  codeUrl.value = '/api/Account/getVerificationCodePhoto?' + new Date().getTime();
 };
 
 const handleCodeError = () => {
