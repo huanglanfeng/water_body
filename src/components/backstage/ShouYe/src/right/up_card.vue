@@ -52,9 +52,8 @@ import bg2 from "@/assets/image/report-count.png";
 
   .card2 {
     height: auto;
-    width: 300px;
+    width: 100%;
     margin: 10px;
-    // background-image: linear-gradient( 135deg, #43CBFF 10%, #9708CC 100%) ;
     border-radius: 5%;
   }
 }

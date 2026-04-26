@@ -43,7 +43,7 @@ var option = {
         top: '5',
         textStyle: {
             padding:[4,0,0,0],
-            color: '33FFFF',
+            color: '#33FFFF',
         },
         itemWidth: 15,
         itemHeight: 10,

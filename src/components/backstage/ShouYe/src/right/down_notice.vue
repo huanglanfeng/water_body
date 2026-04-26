@@ -1,9 +1,8 @@
 <template>
   <div class="content" style="max-height: 200px; overflow-y: scroll;">
     <ul>
-      <!-- eslint-disable-next-line vue/require-v-for-key -->
-      <li v-for="item in listData" @click="setData(item)">
-        {{ item.title + "..." }}
+      <li v-for="(item, index) in listData" :key="index" @click="setData(item)">
+        {{ item.title }}
       </li>
     </ul>
   </div>

@@ -15,7 +15,7 @@ const init = () => {
   option = {
     legend: {
       textStyle: {
-        color: '###a0a0a0'
+        color: '#a0a0a0'
       },
       top: '5%'
     },
