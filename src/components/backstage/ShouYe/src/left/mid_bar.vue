@@ -12,7 +12,7 @@
       <el-table-column prop="id" label="序号" />
       <el-table-column prop="time" label="时间" />
       <el-table-column prop="account" label="反馈用户" />
-      <el-table-column prop="site" label="反馈用户" />
+      <el-table-column prop="site" label="监测地点" />
       <el-table-column prop="content" label="反馈内容" />
       <el-table-column label="操作">
         <template #default="scope">

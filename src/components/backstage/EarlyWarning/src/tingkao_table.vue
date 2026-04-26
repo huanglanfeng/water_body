@@ -15,7 +15,7 @@
       </el-form>
     </div>
 
-    <el-table :data="paginatedData" stripe style="width: 100%" v-loading="loading">
+    <el-table :data="paginatedData" stripe style="width: 100%" empty-text="暂无预警数据" v-loading="loading">
       <el-table-column prop="id" label="序号" />
       <el-table-column prop="element" label="元素" />
       <el-table-column prop="content" label="含量（超）" />

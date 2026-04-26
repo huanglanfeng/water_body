@@ -15,7 +15,7 @@
       </el-form>
     </div>
 
-    <el-table :data="paginatedData" stripe style="width: 100%">
+    <el-table :data="paginatedData" stripe style="width: 100%" empty-text="暂无预警数据">
       <el-table-column prop="id" label="序号" />
       <el-table-column prop="deviceId" label="设备编号" />
       <el-table-column prop="exceptionArea" label="堆积地区" />

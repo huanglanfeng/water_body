@@ -49,7 +49,11 @@
           <el-table-column prop="name" label="用户名" />
           <el-table-column prop="gender" label="性别" />
           <el-table-column prop="mail" label="邮箱" />
-          <el-table-column prop="password" label="密码" />
+          <el-table-column label="密码">
+            <template #default="scope">
+              <span style="letter-spacing: 2px;">******</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="role" label="身份" />
           <el-table-column label="操作">
           <template #default="scope">
@@ -161,8 +165,7 @@ const addData = async () => {
         });
         if (item) {   
           let data = {
-            id: 1,
-            data: 'ddfdd'
+            id: item.id,
           }                             
           await userdelete(data);            
         }

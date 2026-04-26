@@ -7,7 +7,7 @@
       <el-input v-model="formData.facilitycode" />
     </el-form-item>
     <el-form-item label="设备状态">
-      <el-input v-model="formData.state" />
+      <el-input v-model="formData.status" />
     </el-form-item>
     <el-form-item label="数据更新时间">
       <el-input v-model="formData.newtime" />
@@ -36,7 +36,7 @@ const isDisabled = ref(false);
 const formData = ref<any>({
   type: "",
   facilitycode: "",
-  state: "",
+  status: "",
   newtime: "",
   intervaltime: "",
   content: "",

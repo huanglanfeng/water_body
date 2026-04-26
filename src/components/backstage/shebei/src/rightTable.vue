@@ -18,7 +18,16 @@
     <el-table :data="paginatedData" stripe style="width: 100%" v-loading="loading">
       <el-table-column prop="type" label="设备类型" />
       <el-table-column prop="id" label="设备编号" />
-      <el-table-column prop="status" label="设备状态" />
+      <el-table-column prop="status" label="设备状态">
+        <template #default="scope">
+          <el-tag
+            :type="scope.row.status === '在线' ? 'success' : scope.row.status === '维修' ? 'warning' : 'info'"
+            size="small"
+          >
+            {{ scope.row.status }}
+          </el-tag>
+        </template>
+      </el-table-column>
       <el-table-column prop="updateTime" label="数据更新时间" />
       <el-table-column prop="interval" label="数据间隔" />
       <el-table-column prop="siteId" label="检测地区" />
