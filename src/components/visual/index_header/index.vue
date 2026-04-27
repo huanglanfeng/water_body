@@ -1,8 +1,5 @@
 <template>
   <div class="content">
-    <div class="time">
-      <timeVue></timeVue>
-    </div>
     <div class="title">
       <headerTitleVue></headerTitleVue>
     </div>
@@ -29,7 +26,6 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import tabButtonVue from "./tabButton.vue";
 import headerTitleVue from "./headerTitle.vue";
-import timeVue from "@/views/visual/supervisor/time.vue";
 
 const route = useRoute();
 const currentPath = computed(() => route.path);
@@ -63,13 +59,6 @@ const isActive = (item: { path: string }) => {
   padding: 0 20px;
   box-sizing: border-box;
 
-  .time {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 15vw;
-    flex-shrink: 0;
-  }
   .title {
     flex: 1;
     display: flex;
@@ -109,7 +98,7 @@ const isActive = (item: { path: string }) => {
     }
   }
   .back {
-    width: 15vw;
+    width: 120px;
     display: flex;
     justify-content: center;
     align-items: center;
