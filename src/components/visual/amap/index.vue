@@ -73,7 +73,7 @@ const initMap = () => {
   map = new AMap.Map('amap-container', {
     zoom: 12,
     center: [115.93, 28.68],
-    pitch: 30,
+    pitch: 60,
     rotation: 0,
     viewMode: '3D',
     mapStyle: 'amap://styles/dark',
