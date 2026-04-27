@@ -76,10 +76,17 @@ const initMap = () => {
     attributionControl: false,
   });
 
-  // 高德中文深色地图瓦片
-  L.tileLayer('https://wprd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&x={x}&y={y}&z={z}&style=8', {
+  // 高德卫星图层（无标注，突出流域）
+  L.tileLayer('https://webst0{s}.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}', {
     subdomains: ['1', '2', '3', '4'],
     maxZoom: 19,
+  }).addTo(map);
+
+  // 叠加中文路名标注（半透明，不抢眼）
+  L.tileLayer('https://webst0{s}.is.autonavi.com/appmaptile?style=8&x={x}&y={y}&z={z}', {
+    subdomains: ['1', '2', '3', '4'],
+    maxZoom: 19,
+    opacity: 0.3,
   }).addTo(map);
 
   // 添加监测站点标记
@@ -180,6 +187,9 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   z-index: 1;
+  transform: perspective(1000px) rotateX(30deg);
+  transform-origin: center 70%;
+  border-radius: 4px;
 }
 
 .right-panels {

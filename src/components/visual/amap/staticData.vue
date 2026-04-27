@@ -10,41 +10,42 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onUnmounted } from "vue";
-
-const currentTime = ref("");
-let timer: ReturnType<typeof setInterval> | null = null;
-
-const formatTime = () => {
-    const now = new Date();
-    const y = now.getFullYear();
-    const m = String(now.getMonth() + 1).padStart(2, "0");
-    const d = String(now.getDate()).padStart(2, "0");
-    const h = String(now.getHours()).padStart(2, "0");
-    const min = String(now.getMinutes()).padStart(2, "0");
-    const s = String(now.getSeconds()).padStart(2, "0");
-    currentTime.value = `${y}-${m}-${d} ${h}:${min}:${s}`;
-};
+import { ref, onMounted, inject, watch } from "vue";
+import { warning } from "@/api/index";
 
 const infoList = ref([
     { label: "水域名称", value: "瑶湖" },
     { label: "水域面积", value: "15.5 km²" },
-    { label: "监测站点", value: "6 个" },
+    { label: "监测站点", value: "15 个" },
     { label: "水质等级", value: "Ⅲ类" },
-    { label: "最近更新", value: "" },
+    { label: "最近更新", value: "加载中..." },
 ]);
 
-onMounted(() => {
-    formatTime();
-    infoList.value[4].value = currentTime.value;
-    timer = setInterval(() => {
-        formatTime();
-        infoList.value[4].value = currentTime.value;
-    }, 1000);
-});
+const loadLatestTime = async () => {
+    try {
+        const res = await warning({});
+        if (res.data && Array.isArray(res.data) && res.data.length > 0) {
+            // 按时间排序取最新
+            const sorted = res.data
+                .filter((item: any) => item.time)
+                .sort((a: any, b: any) => new Date(b.time).getTime() - new Date(a.time).getTime());
+            if (sorted.length > 0) {
+                infoList.value[4].value = sorted[0].time;
+            }
+        }
+    } catch (e) {
+        infoList.value[4].value = "--";
+    }
+};
 
-onUnmounted(() => {
-    if (timer) { clearInterval(timer); }
+// 监听刷新
+const refreshKey = inject<ReturnType<typeof ref<number>>>('refreshKey');
+if (refreshKey) {
+    watch(refreshKey, () => { loadLatestTime(); });
+}
+
+onMounted(() => {
+    loadLatestTime();
 });
 </script>
 
@@ -58,25 +59,31 @@ onUnmounted(() => {
 .info-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 8px;
   height: 100%;
   align-content: center;
 }
 .info-item {
   display: flex;
-  flex-direction: column;
-  gap: 3px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  border: 1px solid rgba(0, 180, 255, 0.08);
+  border-radius: 4px;
+  background: rgba(0, 30, 60, 0.3);
 }
 .info-item:last-child:nth-child(odd) {
   grid-column: 1 / -1;
 }
 .info-label {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.45);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  flex-shrink: 0;
 }
 .info-value {
-  font-size: 14px;
+  font-size: 13px;
   color: #00e5ff;
   font-weight: 600;
+  text-align: right;
 }
 </style>
