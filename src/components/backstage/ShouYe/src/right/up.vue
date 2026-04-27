@@ -1,9 +1,9 @@
 <template>
-  <div class="content">  
-    <el-card>
-      <up_headerVue></up_headerVue>
+  <div class="up-section">
+    <up_headerVue></up_headerVue>
+    <div style="margin-top: 10px;">
       <up_cardVue></up_cardVue>
-    </el-card>
+    </div>
   </div>
 </template>
 
@@ -13,4 +13,7 @@ import up_cardVue from "./up_card.vue";
 </script>
 
 <style lang="less" scoped>
+.up-section {
+  flex-shrink: 0;
+}
 </style>

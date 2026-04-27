@@ -1,7 +1,6 @@
 <template>
   <div class="right">
     <upVue></upVue>
-
     <downVue></downVue>
   </div>
 </template>
@@ -13,15 +12,10 @@ import downVue from "./src/right/down.vue";
 
 <style lang="less" scoped>
 .right {
-  width: 25vw;
+  width: 100%;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  margin-left: 20px;
-  margin-top: 10px;
-
-  .right-card {
-    border-radius: 1%;
-    height: 100vh;
-  }
+  gap: 10px;
 }
 </style>
