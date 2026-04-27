@@ -1,5 +1,14 @@
 <template>
   <div class="edge-compute">
+    <!-- 模拟数据提示条 -->
+    <el-alert
+      title="当前为模拟演示数据，实际部署后接入真实边缘节点"
+      type="warning"
+      show-icon
+      :closable="false"
+      class="demo-alert"
+    />
+
     <!-- 顶部统计卡片 -->
     <el-row :gutter="20" class="stat-cards">
       <el-col :span="6">
@@ -473,6 +482,10 @@ onUnmounted(() => {
   padding: 20px;
   background-color: #f5f7fa;
   min-height: calc(100vh - 100px);
+
+  .demo-alert {
+    margin-bottom: 20px;
+  }
 
   .stat-cards {
     margin-bottom: 20px;

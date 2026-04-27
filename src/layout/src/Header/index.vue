@@ -4,7 +4,7 @@
       <div class="top_left">
         <div  @click="router.push('/index')" class="view">
           <img src="@/assets/image/view.png" style="width:70px;height:50px;padding-left:25px;padding-top:5px">
-          <span>基于边缘计算的城市污染水体智能监管平台</span>
+          <span>城市水体监管平台</span>
         </div>
       </div>
       <div class="top_right">

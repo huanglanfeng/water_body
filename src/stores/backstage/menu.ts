@@ -13,11 +13,11 @@ export const useMenuStore = defineStore("menu", () => {
       meta: { label: "数据统计", roles: [], type: "2", icon: 'baobiao' },
       component: "data",
       children: [
-        // {
-        //   path: "/Shui_ShengTai",
-        //   meta: { label: "水生态管理", roles: [], icon: 'baobiao' },
-        //   component: "Shui_ShengTai",
-        // },
+        {
+          path: "/Shui_ShengTai",
+          meta: { label: "水生态管理", roles: [], icon: 'baobiao' },
+          component: "Shui_ShengTai",
+        },
         {
           path: "/EarlyWarning",
           meta: { label: "预警详情", roles: [], icon: 'baobiao' },
@@ -66,16 +66,16 @@ export const useMenuStore = defineStore("menu", () => {
           meta: { label: "权限管理", roles: [], icon: 'baobiao' },
           component: "permission",
         },
-        // {
-        //   path: "/role",
-        //   meta: { label: "角色管理", roles: [] },
-        //   component: "role",
-        // },
-        // {
-        //   path: "/user",
-        //   meta: { label: "用户管理", roles: [] },
-        //   component: "user",
-        // },
+        {
+          path: "/role",
+          meta: { label: "角色管理", roles: [] },
+          component: "role",
+        },
+        {
+          path: "/user",
+          meta: { label: "用户管理", roles: [] },
+          component: "user",
+        },
         {
           path: "/notice",
           meta: { label: "公告管理", roles: [], icon: 'baobiao' },

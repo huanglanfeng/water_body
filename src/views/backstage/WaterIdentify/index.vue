@@ -15,6 +15,14 @@
           </div>
         </el-card>
       </el-col>
+      <el-col :span="4">
+        <el-card shadow="hover" class="stat-card upload-card" :body-style="{ padding: '20px' }">
+          <div class="upload-trigger" @click="uploadDialogVisible = true">
+            <el-icon :size="28" color="#409EFF"><Upload /></el-icon>
+            <div class="upload-text">上传图片识别</div>
+          </div>
+        </el-card>
+      </el-col>
     </el-row>
 
     <!-- 水质分类识别结果表格 -->
@@ -117,6 +125,62 @@
       </el-col>
     </el-row>
 
+    <!-- 上传图片识别对话框 -->
+    <el-dialog v-model="uploadDialogVisible" title="上传图片识别" width="650px" :close-on-click-modal="false">
+      <div class="upload-dialog-content">
+        <el-upload
+          class="image-uploader"
+          drag
+          action="#"
+          :auto-upload="false"
+          :on-change="handleFileChange"
+          :show-file-list="false"
+          accept="image/*"
+        >
+          <div v-if="!previewUrl" class="upload-placeholder">
+            <el-icon :size="48" color="#C0C4CC"><Upload /></el-icon>
+            <div class="upload-tip">将图片拖到此处，或<em>点击上传</em></div>
+            <div class="upload-hint">支持 JPG / PNG / BMP 格式，建议不超过 10MB</div>
+          </div>
+          <div v-else class="preview-wrapper">
+            <img :src="previewUrl" class="preview-image" />
+          </div>
+        </el-upload>
+
+        <el-divider v-if="identifyResult" />
+
+        <!-- 识别结果展示 -->
+        <div v-if="identifyResult" class="identify-result">
+          <h4 class="result-title">识别结果</h4>
+          <el-descriptions :column="2" border>
+            <el-descriptions-item label="水质分类">
+              <el-tag :type="getTagType(identifyResult.classifyResult)" effect="dark">
+                {{ identifyResult.classifyResult }}
+              </el-tag>
+            </el-descriptions-item>
+            <el-descriptions-item label="置信度">
+              <span :style="{ color: getConfidenceColor(identifyResult.confidence), fontWeight: 'bold' }">
+                {{ identifyResult.confidence }}%
+              </span>
+            </el-descriptions-item>
+            <el-descriptions-item label="主要污染物">{{ identifyResult.pollutants || '—' }}</el-descriptions-item>
+            <el-descriptions-item label="识别模型">{{ identifyResult.model }}</el-descriptions-item>
+          </el-descriptions>
+          <div class="indicator-list" v-if="identifyResult.indicators">
+            <el-tag v-for="(value, key) in identifyResult.indicators" :key="key" class="indicator-tag" type="info">
+              {{ key }}: {{ value }}
+            </el-tag>
+          </div>
+        </div>
+      </div>
+      <template #footer>
+        <el-button @click="resetUploadDialog">取 消</el-button>
+        <el-button type="primary" :loading="identifyLoading" :disabled="!previewUrl" @click="startIdentify">
+          开始识别
+        </el-button>
+      </template>
+    </el-dialog>
+
     <!-- 详情弹窗 -->
     <el-dialog v-model="dialogVisible" title="水质识别详情" width="600px">
       <el-descriptions :column="2" border v-if="currentDetail">
@@ -145,8 +209,9 @@
 <script lang="ts" setup>
 import { ref, onMounted, computed } from 'vue';
 import * as echarts from 'echarts';
-import { Refresh, Cpu, Document, DataLine, TrendCharts, Clock, Location, Warning, CircleCheck } from '@element-plus/icons-vue';
+import { Refresh, Cpu, Document, DataLine, TrendCharts, Clock, Location, Warning, CircleCheck, Upload } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus';
+import type { UploadFile } from 'element-plus';
 
 // 统计卡片数据
 const statCards = ref([
@@ -267,6 +332,69 @@ const showDetail = (row: IdentifyResult) => {
 // 刷新数据
 const refreshData = () => {
   ElMessage.success('数据已刷新');
+};
+
+// 上传图片识别相关
+const uploadDialogVisible = ref(false);
+const previewUrl = ref('');
+const identifyLoading = ref(false);
+const identifyResult = ref<IdentifyResult | null>(null);
+
+// 处理文件选择
+const handleFileChange = (file: UploadFile) => {
+  if (!file.raw) return;
+  const isImage = file.raw.type.startsWith('image/');
+  const isLt10M = file.raw.size / 1024 / 1024 < 10;
+  if (!isImage) {
+    ElMessage.error('只能上传图片文件!');
+    return;
+  }
+  if (!isLt10M) {
+    ElMessage.error('图片大小不能超过 10MB!');
+    return;
+  }
+  // 生成本地预览地址
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    previewUrl.value = e.target?.result as string;
+  };
+  reader.readAsDataURL(file.raw);
+  // 重置上一次识别结果
+  identifyResult.value = null;
+};
+
+// 模拟开始识别
+const startIdentify = async () => {
+  identifyLoading.value = true;
+  // TODO: 替换为实际API调用
+  // const formData = new FormData();
+  // formData.append('file', file);
+  // const res = await uploadAndIdentify(formData);
+  try {
+    // 模拟接口延迟
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    identifyResult.value = {
+      siteName: '自定义上传',
+      identifyTime: new Date().toLocaleString('zh-CN').replace(/\//g, '-'),
+      classifyResult: '正常水体',
+      confidence: 94.6,
+      pollutants: '',
+      model: 'CNN-LSTM',
+      indicators: { pH: '7.2', 溶解氧: '8.1mg/L', 浊度: '14NTU', 氨氮: '0.35mg/L' }
+    };
+    ElMessage.success('识别完成');
+  } catch (error) {
+    ElMessage.error('识别失败，请重试');
+  } finally {
+    identifyLoading.value = false;
+  }
+};
+
+// 重置上传对话框
+const resetUploadDialog = () => {
+  uploadDialogVisible.value = false;
+  previewUrl.value = '';
+  identifyResult.value = null;
 };
 
 // 初始化趋势图
@@ -502,6 +630,91 @@ onMounted(() => {
 
     .indicator-tag {
       margin: 0;
+    }
+  }
+
+  .upload-card {
+    .upload-trigger {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      height: 100%;
+      min-height: 48px;
+      transition: color 0.3s;
+
+      &:hover {
+        .upload-text {
+          color: #409EFF;
+        }
+      }
+
+      .upload-text {
+        font-size: 14px;
+        color: #606266;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .upload-dialog-content {
+    .image-uploader {
+      width: 100%;
+
+      :deep(.el-upload) {
+        width: 100%;
+      }
+
+      :deep(.el-upload-dragger) {
+        width: 100%;
+        padding: 20px;
+      }
+    }
+
+    .upload-placeholder {
+      text-align: center;
+
+      .upload-tip {
+        margin-top: 12px;
+        font-size: 14px;
+        color: #606266;
+
+        em {
+          color: #409EFF;
+          font-style: normal;
+        }
+      }
+
+      .upload-hint {
+        margin-top: 8px;
+        font-size: 12px;
+        color: #909399;
+      }
+    }
+
+    .preview-wrapper {
+      display: flex;
+      justify-content: center;
+
+      .preview-image {
+        max-width: 100%;
+        max-height: 300px;
+        border-radius: 4px;
+      }
+    }
+
+    .identify-result {
+      .result-title {
+        margin-bottom: 16px;
+        color: #303133;
+        font-size: 16px;
+      }
+
+      .indicator-list {
+        margin-top: 16px;
+      }
     }
   }
 }

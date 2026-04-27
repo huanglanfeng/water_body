@@ -1,6 +1,6 @@
 <template>
   <div class="loginForm">
-    <div class="title">基于边缘计算的城市污染水体<br />智能监管平台</div>
+    <div class="title">城市水体监管平台</div>
     <div class="main">
       <!-- ========== 登录页 ========== -->
       <div v-show="currentPage === 'page1'" class="page-section">
