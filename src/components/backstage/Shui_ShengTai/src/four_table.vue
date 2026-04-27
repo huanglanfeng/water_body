@@ -1,5 +1,6 @@
 <template>
   <el-table
+    v-if="tableData.length > 0"
     :data="
       tableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)
     "
@@ -20,8 +21,9 @@
           </template>
     </el-table-column>
   </el-table>
+  <el-empty v-else description="暂无数据" />
 
-  <div class="page">
+  <div class="page" v-if="tableData.length > 0">
     <el-pagination
       background
       layout="prev, pager, next"

@@ -21,8 +21,8 @@
           style="width: 100%"
           class="threshold-table"
         >
-          <el-table-column prop="name" label="参数名称" width="120" align="center" />
-          <el-table-column label="正常范围" width="150" align="center">
+          <el-table-column prop="name" label="参数名称" min-width="120" align="center" />
+          <el-table-column label="正常范围" min-width="150" align="center">
             <template #default="{ row }">
               <span v-if="row.normalMin !== null && row.normalMax !== null">
                 {{ row.normalMin }} - {{ row.normalMax }}
@@ -35,7 +35,7 @@
               </span>
             </template>
           </el-table-column>
-          <el-table-column label="预警阈值下限" width="150" align="center">
+          <el-table-column label="预警阈值下限" min-width="150" align="center">
             <template #default="{ row }">
               <el-form-item
                 :prop="`thresholds.${$index}.warningMin`"
@@ -52,12 +52,12 @@
                   :max="100"
                   controls-position="right"
                   placeholder="无下限"
-                  style="width: 120px"
+                  style="width: 100%"
                 />
               </el-form-item>
             </template>
           </el-table-column>
-          <el-table-column label="预警阈值上限" width="150" align="center">
+          <el-table-column label="预警阈值上限" min-width="150" align="center">
             <template #default="{ row }">
               <el-form-item
                 :prop="`thresholds.${$index}.warningMax`"
@@ -74,13 +74,13 @@
                   :max="2000"
                   controls-position="right"
                   placeholder="无上限"
-                  style="width: 120px"
+                  style="width: 100%"
                 />
               </el-form-item>
             </template>
           </el-table-column>
-          <el-table-column prop="unit" label="单位" width="100" align="center" />
-          <el-table-column label="状态" width="100" align="center">
+          <el-table-column prop="unit" label="单位" min-width="100" align="center" />
+          <el-table-column label="状态" min-width="100" align="center">
             <template #default="{ row }">
               <el-switch
                 v-model="row.enabled"
@@ -108,14 +108,14 @@
         style="width: 100%"
         class="level-table"
       >
-        <el-table-column prop="id" label="等级" width="80" align="center">
+        <el-table-column prop="id" label="等级" min-width="80" align="center">
           <template #default="{ row }">
             <el-tag :color="row.color" effect="dark" style="border: none">
               {{ row.id }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="名称" width="120" align="center">
+        <el-table-column prop="name" label="名称" min-width="120" align="center">
           <template #default="{ row }">
             <span :style="{ color: row.color, fontWeight: 'bold' }">
               {{ row.name }}
@@ -123,7 +123,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="triggerCondition" label="触发条件" align="center" />
-        <el-table-column label="颜色标识" width="120" align="center">
+        <el-table-column label="颜色标识" min-width="120" align="center">
           <template #default="{ row }">
             <div class="color-block" :style="{ backgroundColor: row.color }"></div>
           </template>

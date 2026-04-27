@@ -17,14 +17,12 @@
             <img :src="jsonObjImage?.photo" alt="" class="dropdown">
             <template v-slot:dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item @click="personal">个人中心</el-dropdown-item>
-                <el-dropdown-item @click="exit">退出</el-dropdown-item>
+                <el-dropdown-item @click="exit">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </template>
         </el-dropdown>
       </div>
     </div>
-    <el-divider />
     <div class="top_down">
       <div class="top_middle">
         <Asider></Asider>
@@ -72,10 +70,6 @@ const dashboardStore = useDashBoardStore();
 
 const { isCollapse } = storeToRefs(dashboardStore);
 
-const personal=()=> {
-  // 跳转到个人中心页面
-  router.push('/personal');
-}
 const exit=()=> {
   router.push('/login');
 }
@@ -111,11 +105,14 @@ if (getImage !== null) {
   width: 100%;
   height: 80px;
   background-color: rgb(29, 38, 48);
+  display: flex;
+  flex-direction: column;
   .top_up{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     height: 40px;
+    flex-shrink: 0;
     .top_left {
       width: 82%;
       .view{
@@ -150,22 +147,15 @@ if (getImage !== null) {
 
   }
   .top_down{
+    flex: 1;
     width: 100%;
+    border-top: 1px solid rgba(104, 104, 104, 0.45);
     .top_middle{
       width: 60%;
+      height: 100%;
       position: relative;
       left: 1%;
     }
   }
-}
-
-element.style {
-    --el-border-style: solid;
-}
-.el-divider--horizontal[data-v-4fe3954e] {
-    margin: 4px 0;
-}
-.el-divider--horizontal{
-  border-top: 1px #68686873 var(--el-border-style);
 }
 </style>

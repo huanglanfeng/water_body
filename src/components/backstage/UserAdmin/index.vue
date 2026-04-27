@@ -1,23 +1,5 @@
 <template>
   <div class="content">
-    <el-row :gutter="12">
-      <el-col :span="10">
-        <el-card shadow="always">
-          <topVue></topVue>
-        </el-card>
-      </el-col>
-      <el-col :span="7">
-        <el-card shadow="hover">
-          <statisticVue></statisticVue>
-        </el-card>
-      </el-col>
-      <el-col :span="7">
-        <el-card shadow="hover">
-          <bar_userVue />
-        </el-card>
-      </el-col>
-    </el-row>
-    <el-divider />
     <el-card>
       <div class="top">
         <el-button type="primary" plain style="margin-bottom: 10px; width: 100px; height: 40px" @click="AddUser">
@@ -80,9 +62,6 @@ import { ElMessage, ElMessageBox, ElNotification, statisticProps } from "element
 import add_tableVue from "./src/add_table.vue";
 import type { form } from "./src/type";
 import dialog_formVue from "./src/dialog_form.vue";
-import topVue from "@/components/backstage/ShouYe/src/left/top.vue";
-import statisticVue from "./src/statistic.vue";
-import bar_userVue from "./src/bar_user.vue";
 import { exportToExcel } from "@/utils/exportExcel";
 
 //获取数据

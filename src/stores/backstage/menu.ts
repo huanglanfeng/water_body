@@ -46,11 +46,6 @@ export const useMenuStore = defineStore("menu", () => {
       component: "shebei",
     },
     {
-      path: "/EdgeCompute",
-      meta: { label: "边缘计算", roles: [], type: "1", icon: 'chuangzhi' },
-      component: "EdgeCompute",
-    },
-    {
       path: "/WaterIdentify",
       meta: { label: "水质识别", roles: [], type: "1", icon: 'shibie' },
       component: "WaterIdentify",
@@ -70,11 +65,6 @@ export const useMenuStore = defineStore("menu", () => {
           path: "/role",
           meta: { label: "角色管理", roles: [] },
           component: "role",
-        },
-        {
-          path: "/user",
-          meta: { label: "用户管理", roles: [] },
-          component: "user",
         },
         {
           path: "/notice",
