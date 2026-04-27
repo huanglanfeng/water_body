@@ -4,6 +4,7 @@ const http = require('http');
 const https = require('https');
 
 const app = express();
+app.set('trust proxy', true);
 const PORT = process.env.PORT || 3000;
 const BACKEND_URL = 'https://waterbodybackend-production.up.railway.app';
 
@@ -16,6 +17,9 @@ app.use('/api', (req, res) => {
   const headers = { ...req.headers };
   delete headers.host;
   delete headers.connection;
+  // 确保X-Forwarded-For只包含客户端真实IP（去掉中间代理链）
+  const clientIp = req.ip || req.socket.remoteAddress || '127.0.0.1';
+  headers['x-forwarded-for'] = clientIp;
 
   // 使用http/https模块转发，设置超时
   const options = {
