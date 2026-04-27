@@ -9,7 +9,7 @@ import {element_O} from "@/api/index";
 import type{form} from "../src/type";
 
 const init = () => {
-  let colorList = ["#46ea91", "#2ba0ff", "#ed593b", "#7357ff", "#f2d750"];
+  let colorList = ["#FF6B6B", "#4ECDC4", "#FFE66D", "#A8E6CF", "#FF8B94"];
   let chartDom = document.getElementById("Element")!;
   let myChart = echarts.init(chartDom);
   let option: any;
@@ -104,14 +104,14 @@ const init = () => {
           color: new echarts.graphic.LinearGradient(1, 1, 0, 0, [
             {
               offset: 0,
-              color: "#90ffc6",
+              color: "#FF9B9B",
             },
             {
               offset: 1,
-              color: "#46ea91",
+              color: "#FF6B6B",
             },
           ]),
-          shadowColor: "rgba(144, 255, 198, .3)",
+          shadowColor: "rgba(255, 107, 107, .3)",
           shadowBlur: 5,
           shadowOffsetY: 5,
         },
@@ -135,14 +135,14 @@ const init = () => {
           color: new echarts.graphic.LinearGradient(1, 1, 0, 0, [
             {
               offset: 0,
-              color: "#67bcfc",
+              color: "#7EDDD6",
             },
             {
               offset: 1,
-              color: "#2ba0ff",
+              color: "#4ECDC4",
             },
           ]),
-          shadowColor: "rgba(105, 188, 252,.3)",
+          shadowColor: "rgba(78, 205, 196, .3)",
           shadowBlur: 5,
           shadowOffsetY: 5,
         },
@@ -166,14 +166,14 @@ const init = () => {
           color: new echarts.graphic.LinearGradient(1, 1, 0, 0, [
             {
               offset: 0,
-              color: "#fc937e ",
+              color: "#FFF09D",
             },
             {
               offset: 1,
-              color: "#ed593b",
+              color: "#FFE66D",
             },
           ]),
-          shadowColor: "rgb(252, 147, 126,.3)",
+          shadowColor: "rgba(255, 230, 109, .3)",
           shadowBlur: 2,
           shadowOffsetY: 2,
         },
@@ -197,14 +197,14 @@ const init = () => {
           color: new echarts.graphic.LinearGradient(1, 1, 0, 0, [
             {
               offset: 0,
-              color: "#a390ff",
+              color: "#C8F0DF",
             },
             {
               offset: 1,
-              color: "#7357ff",
+              color: "#A8E6CF",
             },
           ]),
-          shadowColor: "rgba(115, 87, 255, .1)",
+          shadowColor: "rgba(168, 230, 207, .1)",
           shadowBlur: 5,
           shadowOffsetY: 5,
         },
@@ -228,14 +228,14 @@ const init = () => {
           color: new echarts.graphic.LinearGradient(1, 1, 0, 0, [
             {
               offset: 0,
-              color: "#ffeb86",
+              color: "#FFB3B8",
             },
             {
               offset: 1,
-              color: "#f2d750",
+              color: "#FF8B94",
             },
           ]),
-          shadowColor: "rgba(255, 235, 134, .5)",
+          shadowColor: "rgba(255, 139, 148, .5)",
           shadowBlur: 5,
           shadowOffsetY: 5,
         },
@@ -304,7 +304,7 @@ onMounted(async() => {
 
 <style lang="less" scoped>
 #Element {
-  width: 550px;
-  height: 250px;
+  width: 100%;
+  height: 100%;
 }
 </style>

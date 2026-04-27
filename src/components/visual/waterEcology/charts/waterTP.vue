@@ -86,22 +86,22 @@ const init = () => {
               0, 0, 0, 1,
               [{
                 offset: 0,
-                color: '#00f'
+                color: '#0000ff'
               },
               {
                 offset: 1,
-                color: '#0ff'
+                color: '#00ffff'
               }
               ]
             )
           }
         },
-        data: [tableData.value[0]?.a1, 
-        tableData.value[0]?.a2, 
-        tableData.value[0]?.a3, 
-        tableData.value[0]?.a4, 
-        tableData.value[0]?.a5, 
-        tableData.value[0]?.a6, 
+        data: [tableData.value[0]?.a1,
+        tableData.value[0]?.a2,
+        tableData.value[0]?.a3,
+        tableData.value[0]?.a4,
+        tableData.value[0]?.a5,
+        tableData.value[0]?.a6,
         tableData.value[0]?.a7]
       },
       {
@@ -110,7 +110,7 @@ const init = () => {
         smooth: true,
         yAxisIndex: 1,
         lineStyle:{
-          color:"greenyellow"
+          color: "#adff2f"
         },
         data: [
           tableData.value[0]?.t1,
@@ -161,7 +161,7 @@ const init = () => {
       myChart.setOption(option);
     }, 2500);
   }
-  
+
   option && myChart.setOption(option);
 };
 
@@ -179,7 +179,7 @@ onMounted(async () => {
 
 <style lang="less" scoped>
 #waterTP {
-  width: 600px;
-  height: 300px;
+  width: 100%;
+  height: 100%;
 }
 </style>

@@ -1,103 +1,60 @@
 <template>
-  <div class="main">
-    <button class="BackIndex" @click="back">
-      <el-icon style="color:aqua" size="26px">
-        <CaretLeft />
-      </el-icon>
-      <span>返回</span>
-    </button>
-    <dv-borderBox2>
-      <el-tabs v-model="activeName" tab-position="left" @tab-click="handleClick" style="height: 100%;"
-        class="demo-tabs">
-        <el-tab-pane label="水域基础信息" name="first">
-          <water1Vue></water1Vue>
-        </el-tab-pane>
-        <el-tab-pane label="外部影响因素" name="second">
-          <water2Vue></water2Vue>
-        </el-tab-pane>
-        <!-- <el-tab-pane label="Role" name="third">Role</el-tab-pane>
-                <el-tab-pane label="Task" name="fourth">Task</el-tab-pane> -->
-      </el-tabs>
-    </dv-borderBox2>
+  <div class="water-detection">
+    <div class="chart-card">
+      <div class="card-title">水体温度</div>
+      <waterTPVue></waterTPVue>
+    </div>
+    <div class="chart-card">
+      <div class="card-title">水体pH值</div>
+      <waterPHVue></waterPHVue>
+    </div>
+    <div class="chart-card">
+      <div class="card-title">元素检测</div>
+      <elementVue></elementVue>
+    </div>
+    <div class="chart-card">
+      <div class="card-title">水体浊度</div>
+      <waterTUVue></waterTUVue>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import water1Vue from "@/components/visual/waterEcology/src/water1.vue";
-import water2Vue from "@/components/visual/waterEcology/src/water2.vue"
-import { ref } from 'vue'
-import type { TabsPaneContext } from 'element-plus'
-import router from "@/router";
-
-const activeName = ref('first')
-
-const handleClick = (tab: TabsPaneContext, event: Event) => {
-    console.log(tab, event)
-}
-
-const back=()=>{
-  router.push('/index')
-}
+import waterPHVue from "@/components/visual/waterEcology/charts/waterPH.vue";
+import waterTPVue from "@/components/visual/waterEcology/charts/waterTP.vue";
+import elementVue from "@/components/visual/waterEcology/charts/element.vue";
+import waterTUVue from "@/components/visual/waterEcology/charts/waterTU.vue";
 </script>
 
 <style lang="less" scoped>
-.main{
-    width: 90vw;
-    height: 80vh;
-    margin: 2vh 5vw;
-    background: #9999994b;
-    .BackIndex{
-        width: 20vw;
-        height: 40px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: absolute;
-        top: 0vh;
-        left: 0vw;
-        border: none;
-        z-index: 999;
-        background: transparent;
-        span{
-            color: rgb(44, 255, 255);
-            font: italic bold 24px/30px arial, sans-serif;
-        }
-        }
-}
-.demo-tabs > .el-tabs__content {
-  padding: 32px;
-  color: #6b778c;
-  font-size: 32px;
-  font-weight: 600;
-}
-
-.el-tabs--right .el-tabs__content,
-.el-tabs--left .el-tabs__content {
+.water-detection {
+  width: 100%;
   height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 8px;
+  padding: 8px;
+  box-sizing: border-box;
 }
-  :deep(.el-tabs__content) {
-    overflow: visible;
-    margin: 20px 0 0px 0;
-  }  
-  :deep(.el-tabs__item) {
-    color: white;
-    font-size: 20px;
-    font-weight: 600;
-    margin-top: 20px;
-  }
-  :deep(.el-tabs__item.is-active) {
-    color: #09faee;
-  }
-  :deep(.el-icon-arrow-left) {
-    color: white;
-  }
-  :deep(.el-icon-arrow-right) {
-    color: white;
-  }
-  :deep(.el-tabs__nav-wrap::after) {
-    height: 0;
-  }
-  :deep(.el-tabs__active-bar) {
-    background-color: #11fff3;
-  }
+.chart-card {
+  border: 1px solid rgba(0, 180, 255, 0.2);
+  border-radius: 4px;
+  background: rgba(0, 20, 50, 0.4);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.card-title {
+  height: 36px;
+  line-height: 36px;
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #00e5ff;
+  border-bottom: 1px solid rgba(0, 180, 255, 0.15);
+  background: linear-gradient(90deg, rgba(0, 180, 255, 0.1), transparent);
+  letter-spacing: 1px;
+  flex-shrink: 0;
+}
 </style>
