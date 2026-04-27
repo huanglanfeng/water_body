@@ -47,12 +47,24 @@ const mapRef = ref<HTMLElement | null>(null);
 let map: L.Map | null = null;
 
 const sites = [
-  { name: '瑶湖', lat: 28.6820, lng: 115.9320, quality: 'Ⅲ类', area: '15.5km²', status: '在线', color: '#4ECDC4' },
-  { name: '青山湖', lat: 28.6920, lng: 115.9720, quality: 'Ⅳ类', area: '3.2km²', status: '预警', color: '#FFA07A' },
-  { name: '赣江', lat: 28.6850, lng: 115.8900, quality: 'Ⅲ类', area: '--', status: '在线', color: '#4ECDC4' },
-  { name: '艾溪湖', lat: 28.6980, lng: 115.9550, quality: 'Ⅱ类', area: '4.5km²', status: '在线', color: '#4ECDC4' },
-  { name: '抚河', lat: 28.6700, lng: 115.9200, quality: 'Ⅴ类', area: '--', status: '严重', color: '#FF6B6B' },
-  { name: '鄱阳湖', lat: 29.1500, lng: 116.2000, quality: 'Ⅱ类', area: '3283km²', status: '在线', color: '#4ECDC4' },
+  // 湖泊
+  { name: '瑶湖', lat: 28.6820, lng: 115.9320, quality: 'Ⅲ类', area: '15.5km²', status: '在线', ph: '7.2', turbidity: '12.5', color: '#4ECDC4', type: '湖泊' },
+  { name: '青山湖', lat: 28.6920, lng: 115.9720, quality: 'Ⅳ类', area: '3.2km²', status: '预警', ph: '6.8', turbidity: '28.3', color: '#FFA07A', type: '湖泊' },
+  { name: '艾溪湖', lat: 28.6980, lng: 115.9550, quality: 'Ⅱ类', area: '4.5km²', status: '在线', ph: '7.5', turbidity: '8.2', color: '#4ECDC4', type: '湖泊' },
+  { name: '象湖', lat: 28.6550, lng: 115.9050, quality: 'Ⅲ类', area: '2.8km²', status: '在线', ph: '7.1', turbidity: '15.0', color: '#4ECDC4', type: '湖泊' },
+  { name: '碟子湖', lat: 28.7100, lng: 115.8650, quality: 'Ⅲ类', area: '0.6km²', status: '在线', ph: '7.3', turbidity: '10.8', color: '#4ECDC4', type: '湖泊' },
+  { name: '梅湖', lat: 28.6400, lng: 115.9500, quality: 'Ⅳ类', area: '1.2km²', status: '预警', ph: '6.5', turbidity: '22.1', color: '#FFA07A', type: '湖泊' },
+  { name: '军山湖', lat: 28.5200, lng: 116.3500, quality: 'Ⅱ类', area: '32.0km²', status: '在线', ph: '7.8', turbidity: '5.6', color: '#4ECDC4', type: '湖泊' },
+  // 河流
+  { name: '赣江（南昌段）', lat: 28.6850, lng: 115.8900, quality: 'Ⅲ类', area: '--', status: '在线', ph: '7.0', turbidity: '18.5', color: '#4ECDC4', type: '河流' },
+  { name: '抚河（南昌段）', lat: 28.6700, lng: 115.9200, quality: 'Ⅴ类', area: '--', status: '严重', ph: '5.8', turbidity: '45.2', color: '#FF6B6B', type: '河流' },
+  { name: '锦江', lat: 28.5800, lng: 115.7500, quality: 'Ⅲ类', area: '--', status: '在线', ph: '7.2', turbidity: '14.3', color: '#4ECDC4', type: '河流' },
+  { name: '信江', lat: 28.4500, lng: 116.5000, quality: 'Ⅱ类', area: '--', status: '在线', ph: '7.6', turbidity: '9.1', color: '#4ECDC4', type: '河流' },
+  { name: '修水', lat: 29.0300, lng: 114.5800, quality: 'Ⅱ类', area: '--', status: '在线', ph: '7.4', turbidity: '7.8', color: '#4ECDC4', type: '河流' },
+  // 水库/大型水域
+  { name: '鄱阳湖（南昌区域）', lat: 29.1500, lng: 116.2000, quality: 'Ⅱ类', area: '3283km²', status: '在线', ph: '7.9', turbidity: '6.2', color: '#4ECDC4', type: '湖泊' },
+  { name: '幸福水库', lat: 28.7500, lng: 115.7000, quality: 'Ⅲ类', area: '1.8km²', status: '在线', ph: '7.1', turbidity: '11.0', color: '#4ECDC4', type: '水库' },
+  { name: '溪霞水库', lat: 28.9000, lng: 115.6500, quality: 'Ⅱ类', area: '0.9km²', status: '在线', ph: '7.5', turbidity: '6.5', color: '#4ECDC4', type: '水库' },
 ];
 
 const initMap = () => {
@@ -64,8 +76,9 @@ const initMap = () => {
     attributionControl: false,
   });
 
-  // 深色地图瓦片
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  // 高德中文深色地图瓦片
+  L.tileLayer('https://wprd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&x={x}&y={y}&z={z}&style=8', {
+    subdomains: ['1', '2', '3', '4'],
     maxZoom: 19,
   }).addTo(map);
 
@@ -88,15 +101,17 @@ const initMap = () => {
 
     // 点击弹窗
     marker.bindPopup(`
-      <div style="font-family: sans-serif; min-width: 180px; padding: 4px 0;">
-        <div style="font-size: 15px; font-weight: 700; color: #333; margin-bottom: 8px; border-bottom: 2px solid ${site.color}; padding-bottom: 6px;">
+      <div style="font-family: sans-serif; min-width: 200px; padding: 4px 0;">
+        <div style="font-size: 15px; font-weight: 700; color: #e0e0e0; margin-bottom: 8px; border-bottom: 2px solid ${site.color}; padding-bottom: 6px;">
           ${site.name}
         </div>
-        <table style="width: 100%; font-size: 13px; color: #555; border-collapse: collapse;">
-          <tr><td style="padding: 3px 0; color: #999;">水质等级</td><td style="font-weight: 600; color: ${site.color};">${site.quality}</td></tr>
-          <tr><td style="padding: 3px 0; color: #999;">水域面积</td><td>${site.area}</td></tr>
-          <tr><td style="padding: 3px 0; color: #999;">运行状态</td><td><span style="color: ${site.color}; font-weight: 600;">${site.status}</span></td></tr>
-          <tr><td style="padding: 3px 0; color: #999;">经纬度</td><td>${site.lat.toFixed(4)}, ${site.lng.toFixed(4)}</td></tr>
+        <table style="width: 100%; font-size: 13px; color: #ccc; border-collapse: collapse;">
+          <tr><td style="padding: 3px 0; color: #888;">水域类型</td><td>${site.type}</td></tr>
+          <tr><td style="padding: 3px 0; color: #888;">水质等级</td><td style="font-weight: 600; color: ${site.color};">${site.quality}</td></tr>
+          <tr><td style="padding: 3px 0; color: #888;">pH值</td><td>${site.ph}</td></tr>
+          <tr><td style="padding: 3px 0; color: #888;">浊度(NTU)</td><td>${site.turbidity}</td></tr>
+          <tr><td style="padding: 3px 0; color: #888;">水域面积</td><td>${site.area}</td></tr>
+          <tr><td style="padding: 3px 0; color: #888;">运行状态</td><td><span style="color: ${site.color}; font-weight: 600;">${site.status}</span></td></tr>
         </table>
       </div>
     `, { className: 'dark-popup' });
