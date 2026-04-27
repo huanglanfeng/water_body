@@ -7,82 +7,27 @@
 
     <!-- 主内容区 -->
     <div class="main-content">
-      <!-- 左侧：水域地图 -->
+      <!-- 左侧：地图 -->
       <div class="map-section">
         <div class="panel-title">南昌市水域监测分布</div>
         <div class="map-body">
-          <div class="map-container">
-            <div class="map-bg">
-              <!-- 简化水域示意图 -->
-              <svg viewBox="0 0 800 500" class="map-svg">
-                <!-- 背景网格 -->
-                <defs>
-                  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(0,180,255,0.06)" stroke-width="0.5"/>
-                  </pattern>
-                  <linearGradient id="waterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color:rgba(0,100,200,0.3)"/>
-                    <stop offset="100%" style="stop-color:rgba(0,180,255,0.15)"/>
-                  </linearGradient>
-                  <filter id="glow">
-                    <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-                    <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
-                  </filter>
-                </defs>
-                <rect width="800" height="500" fill="url(#grid)"/>
-                <!-- 赣江 -->
-                <path d="M 50 200 Q 200 180 350 220 Q 500 260 650 230 Q 720 220 780 240" fill="none" stroke="url(#waterGrad)" stroke-width="18" stroke-linecap="round"/>
-                <text x="400" y="210" fill="rgba(0,200,255,0.5)" font-size="13">赣 江</text>
-                <!-- 抚河 -->
-                <path d="M 200 50 Q 250 120 280 200 Q 300 260 320 320" fill="none" stroke="url(#waterGrad)" stroke-width="12" stroke-linecap="round"/>
-                <text x="220" y="140" fill="rgba(0,200,255,0.5)" font-size="11">抚 河</text>
-                <!-- 瑶湖 -->
-                <ellipse cx="520" cy="150" rx="80" ry="45" fill="url(#waterGrad)" stroke="rgba(0,180,255,0.3)" stroke-width="1.5"/>
-                <text x="500" y="155" fill="rgba(0,200,255,0.6)" font-size="12">瑶 湖</text>
-                <!-- 青山湖 -->
-                <ellipse cx="380" cy="280" rx="55" ry="35" fill="url(#waterGrad)" stroke="rgba(0,180,255,0.3)" stroke-width="1.5"/>
-                <text x="362" y="285" fill="rgba(0,200,255,0.6)" font-size="11">青山湖</text>
-                <!-- 艾溪湖 -->
-                <ellipse cx="580" cy="260" rx="45" ry="28" fill="url(#waterGrad)" stroke="rgba(0,180,255,0.3)" stroke-width="1.5"/>
-                <text x="564" y="265" fill="rgba(0,200,255,0.6)" font-size="11">艾溪湖</text>
-                <!-- 南昌标注 -->
-                <text x="350" y="170" fill="rgba(255,255,255,0.7)" font-size="18" font-weight="600" filter="url(#glow)">南昌市</text>
-                <circle cx="350" cy="175" r="4" fill="rgba(0,229,255,0.8)"/>
-
-                <!-- 监测站点标记 -->
-                <g v-for="(site, idx) in sites" :key="idx">
-                  <circle :cx="site.x" :cy="site.y" r="8" :fill="site.color" opacity="0.3" class="pulse-ring"/>
-                  <circle :cx="site.x" :cy="site.y" r="5" :fill="site.color"/>
-                  <text :x="site.x + 12" :y="site.y + 4" fill="rgba(255,255,255,0.8)" font-size="11">{{ site.name }}</text>
-                  <!-- 水质标签 -->
-                  <rect :x="site.x + 10" :y="site.y + 8" width="50" height="18" rx="3" fill="rgba(0,0,0,0.5)"/>
-                  <text :x="site.x + 35" :y="site.y + 21" fill="#00e5ff" font-size="10" text-anchor="middle">{{ site.quality }}</text>
-                </g>
-              </svg>
-            </div>
-            <!-- 图例 -->
-            <div class="map-legend">
-              <div class="legend-item"><span class="dot green"></span>正常</div>
-              <div class="legend-item"><span class="dot orange"></span>预警</div>
-              <div class="legend-item"><span class="dot red"></span>严重</div>
-            </div>
-          </div>
+          <div id="leaflet-map" ref="mapRef"></div>
         </div>
       </div>
 
-      <!-- 右侧面板 -->
+      <!-- 右侧面板：水域信息 → 检测情况 → 设备信息 -->
       <div class="right-panels">
         <div class="panel basic-info">
           <div class="panel-title">水域信息</div>
           <staticData></staticData>
         </div>
-        <div class="panel device-info">
-          <div class="panel-title">设备信息</div>
-          <equitmentVue></equitmentVue>
-        </div>
         <div class="panel detection">
           <div class="panel-title">检测情况</div>
           <TodayDataVue></TodayDataVue>
+        </div>
+        <div class="panel device-info">
+          <div class="panel-title">设备信息</div>
+          <equitmentVue></equitmentVue>
         </div>
       </div>
     </div>
@@ -91,20 +36,72 @@
 
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref, provide } from 'vue';
-import amapMiddleVue from "./amap_middle/amap.vue";
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import staticData from "./staticData.vue";
 import TodayDataVue from "./RightAera/TodayData.vue";
 import equitmentVue from "@/components/visual/supervisor/charts/equitment.vue";
 import leftAreaVue from './amap_left/leftArea.vue';
 
-const sites = ref([
-  { name: '瑶湖', x: 520, y: 150, quality: 'Ⅲ类', color: '#4ECDC4' },
-  { name: '青山湖', x: 380, y: 280, quality: 'Ⅳ类', color: '#FFA07A' },
-  { name: '赣江', x: 300, y: 220, quality: 'Ⅲ类', color: '#4ECDC4' },
-  { name: '艾溪湖', x: 580, y: 260, quality: 'Ⅱ类', color: '#4ECDC4' },
-  { name: '抚河', x: 280, y: 200, quality: 'Ⅴ类', color: '#FF6B6B' },
-  { name: '鄱阳湖', x: 700, y: 300, quality: 'Ⅱ类', color: '#4ECDC4' },
-]);
+const mapRef = ref<HTMLElement | null>(null);
+let map: L.Map | null = null;
+
+const sites = [
+  { name: '瑶湖', lat: 28.6820, lng: 115.9320, quality: 'Ⅲ类', area: '15.5km²', status: '在线', color: '#4ECDC4' },
+  { name: '青山湖', lat: 28.6920, lng: 115.9720, quality: 'Ⅳ类', area: '3.2km²', status: '预警', color: '#FFA07A' },
+  { name: '赣江', lat: 28.6850, lng: 115.8900, quality: 'Ⅲ类', area: '--', status: '在线', color: '#4ECDC4' },
+  { name: '艾溪湖', lat: 28.6980, lng: 115.9550, quality: 'Ⅱ类', area: '4.5km²', status: '在线', color: '#4ECDC4' },
+  { name: '抚河', lat: 28.6700, lng: 115.9200, quality: 'Ⅴ类', area: '--', status: '严重', color: '#FF6B6B' },
+  { name: '鄱阳湖', lat: 29.1500, lng: 116.2000, quality: 'Ⅱ类', area: '3283km²', status: '在线', color: '#4ECDC4' },
+];
+
+const initMap = () => {
+  if (!mapRef.value) return;
+  map = L.map(mapRef.value, {
+    center: [28.68, 115.93],
+    zoom: 12,
+    zoomControl: true,
+    attributionControl: false,
+  });
+
+  // 深色地图瓦片
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    maxZoom: 19,
+  }).addTo(map);
+
+  // 添加监测站点标记
+  sites.forEach((site) => {
+    const markerIcon = L.divIcon({
+      className: 'custom-marker',
+      html: `<div style="
+        width: 14px; height: 14px;
+        background: ${site.color};
+        border: 2px solid rgba(255,255,255,0.8);
+        border-radius: 50%;
+        box-shadow: 0 0 10px ${site.color}80, 0 0 20px ${site.color}40;
+      "></div>`,
+      iconSize: [14, 14],
+      iconAnchor: [7, 7],
+    });
+
+    const marker = L.marker([site.lat, site.lng], { icon: markerIcon }).addTo(map);
+
+    // 点击弹窗
+    marker.bindPopup(`
+      <div style="font-family: sans-serif; min-width: 180px; padding: 4px 0;">
+        <div style="font-size: 15px; font-weight: 700; color: #333; margin-bottom: 8px; border-bottom: 2px solid ${site.color}; padding-bottom: 6px;">
+          ${site.name}
+        </div>
+        <table style="width: 100%; font-size: 13px; color: #555; border-collapse: collapse;">
+          <tr><td style="padding: 3px 0; color: #999;">水质等级</td><td style="font-weight: 600; color: ${site.color};">${site.quality}</td></tr>
+          <tr><td style="padding: 3px 0; color: #999;">水域面积</td><td>${site.area}</td></tr>
+          <tr><td style="padding: 3px 0; color: #999;">运行状态</td><td><span style="color: ${site.color}; font-weight: 600;">${site.status}</span></td></tr>
+          <tr><td style="padding: 3px 0; color: #999;">经纬度</td><td>${site.lat.toFixed(4)}, ${site.lng.toFixed(4)}</td></tr>
+        </table>
+      </div>
+    `, { className: 'dark-popup' });
+  });
+};
 
 // Auto refresh
 const refreshKey = ref(0);
@@ -114,8 +111,15 @@ const triggerRefresh = () => { refreshKey.value++; };
 const startAutoRefresh = () => { refreshTimer = window.setInterval(triggerRefresh, REFRESH_INTERVAL); };
 const stopAutoRefresh = () => { if (refreshTimer) { clearInterval(refreshTimer); refreshTimer = null; } };
 provide('refreshKey', refreshKey);
-onMounted(() => { startAutoRefresh(); });
-onUnmounted(() => { stopAutoRefresh(); });
+
+onMounted(() => {
+  initMap();
+  startAutoRefresh();
+});
+onUnmounted(() => {
+  stopAutoRefresh();
+  if (map) { map.remove(); map = null; }
+});
 </script>
 
 <style lang="less" scoped>
@@ -157,48 +161,10 @@ onUnmounted(() => { stopAutoRefresh(); });
   overflow: hidden;
 }
 
-.map-container {
+#leaflet-map {
   width: 100%;
   height: 100%;
-  position: relative;
-}
-
-.map-bg {
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(ellipse at center, rgba(0, 40, 80, 0.3) 0%, rgba(10, 22, 40, 0.8) 100%);
-}
-
-.map-svg {
-  width: 100%;
-  height: 100%;
-}
-
-.map-legend {
-  position: absolute;
-  bottom: 12px;
-  left: 12px;
-  display: flex;
-  gap: 12px;
-  padding: 6px 12px;
-  background: rgba(0, 20, 50, 0.7);
-  border: 1px solid rgba(0, 180, 255, 0.2);
-  border-radius: 4px;
-}
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.6);
-}
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  &.green { background: #4ECDC4; }
-  &.orange { background: #FFA07A; }
-  &.red { background: #FF6B6B; }
+  z-index: 1;
 }
 
 .right-panels {
@@ -229,12 +195,26 @@ onUnmounted(() => { stopAutoRefresh(); });
   letter-spacing: 1px;
   flex-shrink: 0;
 }
+</style>
 
-.pulse-ring {
-  animation: pulse 2s ease-in-out infinite;
+<style>
+/* 全局样式 - Leaflet弹窗深色主题 */
+.dark-popup .leaflet-popup-content-wrapper {
+  background: rgba(10, 22, 40, 0.95);
+  color: #fff;
+  border: 1px solid rgba(0, 180, 255, 0.3);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
-@keyframes pulse {
-  0%, 100% { r: 8; opacity: 0.3; }
-  50% { r: 14; opacity: 0.1; }
+.dark-popup .leaflet-popup-tip {
+  background: rgba(10, 22, 40, 0.95);
+  border: 1px solid rgba(0, 180, 255, 0.3);
+}
+.dark-popup .leaflet-popup-close-button {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+.custom-marker {
+  background: transparent !important;
+  border: none !important;
 }
 </style>
