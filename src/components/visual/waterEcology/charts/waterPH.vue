@@ -231,9 +231,9 @@ onMounted(async () => {
 });
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 #waterPH {
-  width: 600px;
-  height: 300px;
+  width: 100%;
+  height: 100%;
 }
 </style>

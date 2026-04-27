@@ -16,29 +16,35 @@
       </div>
     </div>
     <div class="back">
-      <tabButtonVue label="后台管理" path="/"></tabButtonVue>
+      <div class="admin-btn" @click="goBack">
+        <span class="admin-icon">⚙️</span>
+        <span>后台管理</span>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { useRoute } from 'vue-router';
-import tabButtonVue from "./tabButton.vue";
+import { useRoute, useRouter } from 'vue-router';
 import headerTitleVue from "./headerTitle.vue";
 
 const route = useRoute();
+const router = useRouter();
 const currentPath = computed(() => route.path);
 
 const navItems = [
   { label: '地图总览', path: '/index/map', icon: '🗺️' },
   { label: '水质检测', path: '/index/water_detection', icon: '💧' },
-  { label: '视频监控', path: '/index/video', icon: '📹' },
-  { label: '预警详情', path: '/index/worning_detection', icon: '⚠️' },
+  { label: '预警监控', path: '/index/video', icon: '📹' },
 ];
 
 const isActive = (item: { path: string }) => {
   return currentPath.value === item.path;
+};
+
+const goBack = () => {
+  router.push('/');
 };
 </script>
 
@@ -56,19 +62,19 @@ const isActive = (item: { path: string }) => {
   box-shadow: 0 2px 20px rgba(0, 212, 255, 0.2);
   position: relative;
   z-index: 100;
-  padding: 0 20px;
+  padding: 0 24px;
   box-sizing: border-box;
 
   .title {
-    flex: 1;
+    flex-shrink: 0;
     display: flex;
-    justify-content: center;
     align-items: center;
   }
   .nav {
+    flex: 1;
     display: flex;
     gap: 4px;
-    flex-shrink: 0;
+    justify-content: center;
     .nav-item {
       padding: 6px 18px;
       font-size: 13px;
@@ -98,11 +104,31 @@ const isActive = (item: { path: string }) => {
     }
   }
   .back {
-    width: 120px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+  }
+  .admin-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    border: 1px solid rgba(0, 180, 255, 0.4);
+    border-radius: 4px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(0, 40, 80, 0.4);
+    .admin-icon {
+      font-size: 14px;
+    }
+    &:hover {
+      color: #00e5ff;
+      border-color: rgba(0, 229, 255, 0.6);
+      background: rgba(0, 229, 255, 0.1);
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+    }
   }
 }
 </style>

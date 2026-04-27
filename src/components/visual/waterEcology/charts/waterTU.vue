@@ -1,6 +1,6 @@
 <template>
   <div class="waterTU">
-    <dv-scroll-board :config="config" style="width: 510px; height: 210px;"/>
+    <dv-scroll-board :config="config" style="width: 100%; height: 100%;"/>
   </div>
 </template>
 <script lang="ts" setup>
@@ -33,9 +33,8 @@ onMounted(async() => {
 </script>
 <style lang="less" scoped>
 .waterTU {
-    height: 250px;
-    width: 550px;
-    margin-left: 40px;
+    width: 100%;
+    height: 100%;
   :deep(.dv-scroll-board .header) {
     width: 100%;
     justify-content: space-around;
