@@ -10,11 +10,10 @@ import { onMounted, reactive, ref, inject, watch } from 'vue';
 import type { form } from "./type";
 const tableData = ref<Array<form>>([]);
 const config = reactive({
-    header: ['编号', '地点', '警告内容', '时间'],
+    header: ['编号', '监测站点', '预警内容', '预警时间'],
     data: [] as form[],
-    // data: [tableData.value[0]?.id],
     index: false,
-    columnWidth: [15, 20, 35, 30],
+    columnWidth: [60, 120, 200, 160],
     align: ['center'],
     headerHeight: 40,
     rowHeight: 35,
@@ -26,8 +25,6 @@ const getData = async () => {
     let res = await warning({});
     tableData.value = res.data;
     config.data = tableData.value;
-    console.log(config.data);
-
 };
 
 // 监听刷新key变化
@@ -41,7 +38,6 @@ if (refreshKey) {
 onMounted(async () => {
     await getData();
 });
-
 </script>
 
 <style lang="less" scoped>
