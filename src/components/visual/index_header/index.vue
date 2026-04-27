@@ -7,9 +7,16 @@
       <headerTitleVue></headerTitleVue>
     </div>
     <div class="nav">
-      <div class="nav-item" :class="{ active: currentPath === '/index/water_detection' || currentPath === '/index/map' }" @click="$router.push('/index/water_detection')">水质检测</div>
-      <div class="nav-item" :class="{ active: currentPath === '/index/video' }" @click="$router.push('/index/video')">视频监控</div>
-      <div class="nav-item" :class="{ active: currentPath === '/index/worning_detection' }" @click="$router.push('/index/worning_detection')">预警详情</div>
+      <div
+        v-for="item in navItems"
+        :key="item.path"
+        class="nav-item"
+        :class="{ active: isActive(item) }"
+        @click="$router.push(item.path)"
+      >
+        <span class="nav-icon">{{ item.icon }}</span>
+        <span>{{ item.label }}</span>
+      </div>
     </div>
     <div class="back">
       <tabButtonVue label="后台管理" path="/"></tabButtonVue>
@@ -26,58 +33,87 @@ import timeVue from "@/views/visual/supervisor/time.vue";
 
 const route = useRoute();
 const currentPath = computed(() => route.path);
+
+const navItems = [
+  { label: '地图总览', path: '/index/map', icon: '🗺️' },
+  { label: '水质检测', path: '/index/water_detection', icon: '💧' },
+  { label: '视频监控', path: '/index/video', icon: '📹' },
+  { label: '预警详情', path: '/index/worning_detection', icon: '⚠️' },
+];
+
+const isActive = (item: { path: string }) => {
+  return currentPath.value === item.path;
+};
 </script>
 
 <style lang="less" scoped>
 .content {
   width: 100vw;
-  height: 10vh;
+  height: 8vh;
+  min-height: 60px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  background:
-    linear-gradient(135deg, #0a1628 0%, #0d2847 50%, #0f385e 100%);
+  background: linear-gradient(135deg, #0a1628 0%, #0d2847 50%, #0f385e 100%);
   background-size: 100% 100%;
   border-bottom: 2px solid rgba(0, 212, 255, 0.5);
-  box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+  box-shadow: 0 2px 20px rgba(0, 212, 255, 0.2);
   position: relative;
-  z-index: 1;
+  z-index: 100;
+  padding: 0 20px;
+  box-sizing: border-box;
 
   .time {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 15vw;
+    flex-shrink: 0;
   }
   .title {
-    width: 35vw;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .nav {
     display: flex;
-    gap: 6px;
-    width: 30vw;
-    justify-content: center;
+    gap: 4px;
+    flex-shrink: 0;
     .nav-item {
-      padding: 4px 16px;
+      padding: 6px 18px;
       font-size: 13px;
-      color: rgba(255, 255, 255, 0.7);
+      color: rgba(255, 255, 255, 0.65);
       cursor: pointer;
       border: 1px solid transparent;
-      border-radius: 2px;
-      transition: all 0.3s;
-      &:hover { color: #fff; background: rgba(0, 180, 255, 0.15); }
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+      .nav-icon {
+        font-size: 14px;
+      }
+      &:hover {
+        color: #fff;
+        background: rgba(0, 180, 255, 0.15);
+        border-color: rgba(0, 180, 255, 0.2);
+      }
       &.active {
         color: #00e5ff;
-        border-color: rgba(0, 229, 255, 0.4);
-        background: rgba(0, 229, 255, 0.1);
+        border-color: rgba(0, 229, 255, 0.5);
+        background: rgba(0, 229, 255, 0.12);
+        box-shadow: 0 0 12px rgba(0, 229, 255, 0.15);
       }
     }
   }
   .back {
-    width: 20vw;
+    width: 15vw;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-shrink: 0;
   }
 }
 </style>

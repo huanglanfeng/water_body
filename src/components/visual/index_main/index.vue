@@ -21,7 +21,8 @@
 }
 .content {
   width: 100vw;
-  height: 90vh;
+  height: 92vh;
   background: transparent;
+  overflow: hidden;
 }
 </style>
