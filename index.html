@@ -1,29 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 
 <head>
   <meta charset="UTF-8">
   <link rel="icon" href="/favicon.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>城市污染水体智能监管平台</title>
-</head>
-
-<body>
-  <div id="app"></div>
-  <script type="module" src="/src/main.ts"></script>
-
+  <title>城市水体监管平台</title>
+  <!-- 高德地图安全密钥 - 必须在地图JS加载之前声明 -->
   <script type="text/javascript">
     window._AMapSecurityConfig = {
       securityJsCode: '42f24460d03c4580c7866fb589100308',
     }
   </script>
+</head>
 
-
-  <!-- amapUI -->
-  <!-- <script src="//webapi.amap.com/ui/1.1/main.js?v=1.1.1"></script> -->
-
-  <!-- <script type="text/javascript"
-src="http://webapi.amap.com/maps?v=2.0&key=6fe1ce525092adeb23e5f84d8921f26b&plugin=Map3D,AMap.DistrictSearch"></script> -->
+<body>
+  <div id="app"></div>
+  <script type="module" src="/src/main.ts"></script>
 </body>
 
 </html>
@@ -38,10 +31,6 @@ src="http://webapi.amap.com/maps?v=2.0&key=6fe1ce525092adeb23e5f84d8921f26b&plug
 
   body {
     margin: 0;
-  }
-
-  ::-webkit-scrollbar {
-    width: 0 !important;
   }
 
   ::-webkit-scrollbar {

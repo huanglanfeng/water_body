@@ -36,6 +36,7 @@
 
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref, provide } from 'vue';
+import AMapLoader from '@amap/amap-jsapi-loader';
 import staticData from "./staticData.vue";
 import TodayDataVue from "./RightAera/TodayData.vue";
 import equitmentVue from "@/components/visual/supervisor/charts/equitment.vue";
@@ -62,93 +63,89 @@ const sites = [
   { name: '溪霞水库', lat: 28.9000, lng: 115.6500, quality: 'Ⅱ类', area: '0.9km²', status: '在线', ph: '7.5', turbidity: '6.5', color: '#4ECDC4', type: '水库' },
 ];
 
-const loadAmapScript = (): Promise<void> => {
-  return new Promise((resolve, reject) => {
-    if ((window as any).AMap) { resolve(); return; }
-    const key = import.meta.env.VITE_AMAP_KEY || 'bf3c21ca5ad67ba0f82f51c76c4afa1d';
-    const script = document.createElement('script');
-    script.src = `https://webapi.amap.com/maps?v=2.0&key=${key}`;
-    script.onload = () => resolve();
-    script.onerror = () => reject(new Error('高德地图加载失败'));
-    document.head.appendChild(script);
-  });
-};
-
-const initMap = () => {
+const initMap = async () => {
   if (!mapRef.value) return;
-  const AMap = (window as any).AMap;
+  try {
+    const AMap = await AMapLoader.load({
+      key: import.meta.env.VITE_AMAP_KEY || 'bf3c21ca5ad67ba0f82f51c76c4afa1d',
+      version: '2.0',
+      plugins: ['AMap.Scale', 'AMap.ToolBar'],
+    }) as any;
 
-  map = new AMap.Map('amap-container', {
-    zoom: 12,
-    center: [115.93, 28.68],
-    pitch: 30,        // 俯仰角30°
-    rotation: 0,      // 旋转角
-    viewMode: '3D',   // 3D视图
-    mapStyle: 'amap://styles/dark',  // 深色主题
-    features: ['bg', 'road', 'building', 'point'],  // 去掉地铁等
-    showLabel: true,
-    showBuildings: false,
-  });
-
-  // 添加卫星图层
-  const satellite = new AMap.TileLayer.Satellite();
-  map.add(satellite);
-
-  // 添加监测站点标记
-  sites.forEach((site) => {
-    const markerContent = document.createElement('div');
-    markerContent.innerHTML = `
-      <div style="
-        width: 16px; height: 16px;
-        background: ${site.color};
-        border: 2px solid rgba(255,255,255,0.9);
-        border-radius: 50%;
-        box-shadow: 0 0 12px ${site.color}80, 0 0 24px ${site.color}40;
-        cursor: pointer;
-      "></div>
-    `;
-
-    const marker = new AMap.Marker({
-      position: [site.lng, site.lat],
-      content: markerContent,
-      offset: new AMap.Pixel(-8, -8),
+    map = new AMap.Map('amap-container', {
+      zoom: 12,
+      center: [115.93, 28.68],
+      pitch: 30,
+      rotation: 0,
+      viewMode: '3D',
+      mapStyle: 'amap://styles/dark',
+      features: ['bg', 'road', 'building', 'point'],
+      showLabel: true,
+      showBuildings: false,
     });
 
-    // 信息窗体
-    const infoWindow = new AMap.InfoWindow({
-      isCustom: true,
-      content: `
+    // 添加卫星图层
+    const satellite = new AMap.TileLayer.Satellite();
+    map.add(satellite);
+
+    // 添加监测站点标记
+    sites.forEach((site) => {
+      const markerContent = document.createElement('div');
+      markerContent.innerHTML = `
         <div style="
-          background: rgba(10, 22, 40, 0.95);
-          border: 1px solid rgba(0, 180, 255, 0.3);
-          border-radius: 8px;
-          padding: 12px 16px;
-          min-width: 200px;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-          font-family: sans-serif;
-        ">
-          <div style="font-size: 15px; font-weight: 700; color: #e0e0e0; margin-bottom: 8px; border-bottom: 2px solid ${site.color}; padding-bottom: 6px;">
-            ${site.name}
+          width: 16px; height: 16px;
+          background: ${site.color};
+          border: 2px solid rgba(255,255,255,0.9);
+          border-radius: 50%;
+          box-shadow: 0 0 12px ${site.color}80, 0 0 24px ${site.color}40;
+          cursor: pointer;
+        "></div>
+      `;
+
+      const marker = new AMap.Marker({
+        position: [site.lng, site.lat],
+        content: markerContent,
+        offset: new AMap.Pixel(-8, -8),
+      });
+
+      // 信息窗体
+      const infoWindow = new AMap.InfoWindow({
+        isCustom: true,
+        content: `
+          <div style="
+            background: rgba(10, 22, 40, 0.95);
+            border: 1px solid rgba(0, 180, 255, 0.3);
+            border-radius: 8px;
+            padding: 12px 16px;
+            min-width: 200px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            font-family: sans-serif;
+          ">
+            <div style="font-size: 15px; font-weight: 700; color: #e0e0e0; margin-bottom: 8px; border-bottom: 2px solid ${site.color}; padding-bottom: 6px;">
+              ${site.name}
+            </div>
+            <table style="width: 100%; font-size: 13px; color: #ccc; border-collapse: collapse;">
+              <tr><td style="padding: 3px 0; color: #888;">水域类型</td><td>${site.type}</td></tr>
+              <tr><td style="padding: 3px 0; color: #888;">水质等级</td><td style="font-weight: 600; color: ${site.color};">${site.quality}</td></tr>
+              <tr><td style="padding: 3px 0; color: #888;">pH值</td><td>${site.ph}</td></tr>
+              <tr><td style="padding: 3px 0; color: #888;">浊度(NTU)</td><td>${site.turbidity}</td></tr>
+              <tr><td style="padding: 3px 0; color: #888;">水域面积</td><td>${site.area}</td></tr>
+              <tr><td style="padding: 3px 0; color: #888;">运行状态</td><td><span style="color: ${site.color}; font-weight: 600;">${site.status}</span></td></tr>
+            </table>
           </div>
-          <table style="width: 100%; font-size: 13px; color: #ccc; border-collapse: collapse;">
-            <tr><td style="padding: 3px 0; color: #888;">水域类型</td><td>${site.type}</td></tr>
-            <tr><td style="padding: 3px 0; color: #888;">水质等级</td><td style="font-weight: 600; color: ${site.color};">${site.quality}</td></tr>
-            <tr><td style="padding: 3px 0; color: #888;">pH值</td><td>${site.ph}</td></tr>
-            <tr><td style="padding: 3px 0; color: #888;">浊度(NTU)</td><td>${site.turbidity}</td></tr>
-            <tr><td style="padding: 3px 0; color: #888;">水域面积</td><td>${site.area}</td></tr>
-            <tr><td style="padding: 3px 0; color: #888;">运行状态</td><td><span style="color: ${site.color}; font-weight: 600;">${site.status}</span></td></tr>
-          </table>
-        </div>
-      `,
-      offset: new AMap.Pixel(0, -16),
-    });
+        `,
+        offset: new AMap.Pixel(0, -16),
+      });
 
-    marker.on('click', () => {
-      infoWindow.open(map, marker.getPosition());
-    });
+      marker.on('click', () => {
+        infoWindow.open(map, marker.getPosition());
+      });
 
-    map.add(marker);
-  });
+      map.add(marker);
+    });
+  } catch (e) {
+    console.error('地图初始化失败:', e);
+  }
 };
 
 // Auto refresh
@@ -160,13 +157,8 @@ const startAutoRefresh = () => { refreshTimer = window.setInterval(triggerRefres
 const stopAutoRefresh = () => { if (refreshTimer) { clearInterval(refreshTimer); refreshTimer = null; } };
 provide('refreshKey', refreshKey);
 
-onMounted(async () => {
-  try {
-    await loadAmapScript();
-    initMap();
-  } catch (e) {
-    console.error('地图加载失败:', e);
-  }
+onMounted(() => {
+  initMap();
   startAutoRefresh();
 });
 onUnmounted(() => {
