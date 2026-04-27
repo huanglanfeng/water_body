@@ -3,7 +3,7 @@
     <div class="top_up">
       <div class="top_left">
         <div  @click="router.push('/index')" class="view">
-          <img src="@/assets/image/view.png" style="width:70px;height:50px;padding-left:25px;padding-top:5px">
+          <img src="@/assets/image/view.png" style="width:40px;height:30px;padding-left:15px">
           <span>城市水体监管平台</span>
         </div>
       </div>
@@ -109,27 +109,26 @@ if (getImage !== null) {
 <style lang="less" scoped>
 .top {
   width: 100%;
-  height: 112px;
+  height: 80px;
   background-color: rgb(29, 38, 48);
   .top_up{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    height: 50px;
+    height: 40px;
     .top_left {
       width: 82%;
       .view{
-        height: 60px;
-        width: 350px;
+        height: 40px;
+        width: 280px;
         display: flex;
         flex-direction: row;
         align-items: center;
         span{
           color: white;
-          font-size: 24px;
+          font-size: 18px;
           font-weight: 600;
           padding-left: 20px;
-          padding-top: 3px;
         }
       }
     }
@@ -140,7 +139,7 @@ if (getImage !== null) {
     justify-content: space-around;
     background-color: rgb(29, 38, 48);
     position: relative;
-    top: 5px;
+    top: 0;
     .dropdown {
       padding: 8px;
       width: 30px;
@@ -164,7 +163,7 @@ element.style {
     --el-border-style: solid;
 }
 .el-divider--horizontal[data-v-4fe3954e] {
-    margin: 10px 0;
+    margin: 4px 0;
 }
 .el-divider--horizontal{
   border-top: 1px #68686873 var(--el-border-style);

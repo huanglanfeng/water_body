@@ -24,10 +24,10 @@ import Main from "./src/Main/index.vue"
 }*/
 .el-header {
   --el-header-padding: 0 0px;
-  --el-header-height: 120px;
+  --el-header-height: 80px;
 }
   .el-main {
-      height: calc(100vh - 60px); //61px为顶部header盒子高度
+      height: calc(100vh - 80px); //80px为顶部header盒子高度
     overflow-y: auto;
   }
 </style>

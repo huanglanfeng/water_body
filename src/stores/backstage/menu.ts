@@ -4,7 +4,7 @@ export const useMenuStore = defineStore("menu", () => {
   const asyncMenu = [
     {
       path: "/ShouYe",
-      meta: { label: "首页", roles: [], type: "1", icon: 'baobiao' },
+      meta: { label: "首页", roles: [], type: "1", icon: 'dashboard' },
       component: "ShouYe",
     },
     {
@@ -15,39 +15,39 @@ export const useMenuStore = defineStore("menu", () => {
       children: [
         {
           path: "/Shui_ShengTai",
-          meta: { label: "水生态管理", roles: [], icon: 'baobiao' },
+          meta: { label: "水生态管理", roles: [], icon: 'shuishengtai' },
           component: "Shui_ShengTai",
         },
         {
           path: "/EarlyWarning",
-          meta: { label: "预警详情", roles: [], icon: 'baobiao' },
+          meta: { label: "预警详情", roles: [], icon: 'yujing' },
           component: "EarlyWarning",
         },
         {
           path: "/WarningConfig",
-          meta: { label: "预警设置", roles: [], icon: 'baobiao' },
+          meta: { label: "预警设置", roles: [], icon: 'yujing' },
           component: "WarningConfig",
         },
         {
           path: "/shibie",
-          meta: { label: "监控录像", roles: [], icon: 'baobiao' },
+          meta: { label: "监控录像", roles: [], icon: 'jiankong' },
           component: "shibie",
         },
       ],
     },
     {
       path: "/UserAdmin",
-      meta: { label: "用户管理", roles: [], type: "1", icon: 'baobiao' },
+      meta: { label: "用户管理", roles: [], type: "1", icon: 'personal' },
       component: "UserAdmin",
     },
     {
       path: "/shebei",
-      meta: { label: "设备管理", roles: [], type: "1", icon: 'baobiao' },
+      meta: { label: "设备管理", roles: [], type: "1", icon: 'shebei' },
       component: "shebei",
     },
     {
       path: "/EdgeCompute",
-      meta: { label: "边缘计算", roles: [], type: "1", icon: 'baobiao' },
+      meta: { label: "边缘计算", roles: [], type: "1", icon: 'chuangzhi' },
       component: "EdgeCompute",
     },
     {
@@ -58,12 +58,12 @@ export const useMenuStore = defineStore("menu", () => {
     {
       path: "/system",
       name: "",
-      meta: { label: "系统管理", roles: [], type: "2", icon: 'baobiao' },
+      meta: { label: "系统管理", roles: [], type: "2", icon: 'system' },
       component: "system",
       children: [
         {
           path: "/perimission",
-          meta: { label: "权限管理", roles: [], icon: 'baobiao' },
+          meta: { label: "权限管理", roles: [], icon: 'xuke' },
           component: "permission",
         },
         {
@@ -78,14 +78,14 @@ export const useMenuStore = defineStore("menu", () => {
         },
         {
           path: "/notice",
-          meta: { label: "公告管理", roles: [], icon: 'baobiao' },
+          meta: { label: "公告管理", roles: [], icon: 'dashboard' },
           component: "notice",
         },
       ],
     },
     {
       path: "/personal",
-      meta: { label: "个人中心", roles: [], type: "1", icon: 'baobiao' },
+      meta: { label: "个人中心", roles: [], type: "1", icon: 'personal' },
       component: "personal",
     },
   ];
