@@ -31,7 +31,7 @@ export const mapOptionConfig = {
 //3D配置
 export const threeDConfig = {
   isShow3D: true,
-  pitch: 120,
+  pitch: 45,
   controlBarConfig: {
     show: false,
     showZoomBar: true,

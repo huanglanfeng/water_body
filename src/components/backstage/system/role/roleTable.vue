@@ -60,7 +60,13 @@ import {
 import dialog_formVue from "./src/dialog_form.vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 
-const tableData = ref([]);
+const tableData = ref([
+  { id: 1, createtime: '2026-01-15', rolecode: 'R001', rolename: '系统管理员' },
+  { id: 2, createtime: '2026-02-20', rolecode: 'R002', rolename: '水质检测员' },
+  { id: 3, createtime: '2026-03-10', rolecode: 'R003', rolename: '设备管理员' },
+  { id: 4, createtime: '2026-03-25', rolecode: 'R004', rolename: '数据分析员' },
+  { id: 5, createtime: '2026-04-01', rolecode: 'R005', rolename: '普通用户' },
+]);
 
 const dialogTableVisible = ref(false);
 

@@ -28,6 +28,19 @@
         <Asider></Asider>
       </div>
     </div>
+
+    <!-- 系统通知弹窗 -->
+    <el-dialog v-model="notifyDialogVisible" title="系统通知" width="600px">
+      <el-table :data="notifyList" style="width: 100%">
+        <el-table-column prop="level" label="级别" width="80">
+          <template #default="scope">
+            <el-tag :type="scope.row.tagType" size="small">{{ scope.row.level }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="content" label="内容" />
+        <el-table-column prop="time" label="时间" width="100" />
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 
@@ -43,8 +56,18 @@ const isRefreshing = ref(false);
 // 消息角标动态化
 const messageCount = ref(5);
 
+const notifyDialogVisible = ref(false);
+
+const notifyList = ref([
+  { level: '严重', tagType: 'danger', content: '青山湖站点COD浓度超标（12.5mg/L）', time: '10:32' },
+  { level: '警告', tagType: 'warning', content: '赣江断面溶解氧低于标准值（4.2mg/L）', time: '09:15' },
+  { level: '严重', tagType: 'danger', content: '瑶湖站点氨氮浓度异常升高', time: '08:47' },
+  { level: '提示', tagType: 'info', content: '青山湖站点设备电量低于20%', time: '08:20' },
+  { level: '警告', tagType: 'warning', content: '抚河断面pH值偏高（8.9）', time: '07:55' },
+]);
+
 const handleChat=()=>{
-  router.push('/personal')
+  notifyDialogVisible.value = true;
 }
 
 const handleRefresh = () => {

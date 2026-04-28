@@ -132,7 +132,7 @@ const initMapInstance = (AMap: any) => {
     rotateEnable: true,
     pitchEnable: true,
     zoom: 15,
-    pitch: 65,
+    pitch: 45,
     rotation: 80,
     viewMode: '3D',
     zooms: [2, 20],
