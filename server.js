@@ -6,7 +6,7 @@ const https = require('https');
 const app = express();
 app.set('trust proxy', true);
 const PORT = process.env.PORT || 3000;
-const BACKEND_URL = 'https://waterbodybackend-production.up.railway.app';
+const BACKEND_URL = process.env.BACKEND_URL || 'https://waterbodybackend-production.up.railway.app';
 
 // API代理：/api → 后端（使用http/https模块转发，更可靠）
 app.use('/api', (req, res) => {
