@@ -5,7 +5,7 @@ const https = require('https');
 const app = express();
 app.set('trust proxy', true);
 const PORT = process.env.PORT || 3000;
-const BACKEND_URL = process.env.BACKEND_URL || 'https://waterbodybackend-production.up.railway.app';
+const BACKEND_URL = process.env.BACKEND_URL || 'https://waterbodybackend-production-43a0.up.railway.app';
 
 // 通用代理：将所有请求转发到后端，去掉 /api 前缀
 app.use('/api', (req, res) => {
